@@ -10,12 +10,12 @@ V2P/圈叉：
 [mitm]
 promotion.waimai.meituan.com
 
-[rewrite_local]
-https:\/\/promotion\.waimai\.meituan\.com\/lottery\/limitcouponcomponent\/fetchcoupon url script-request-body pkc-mt.js
+[rewrite_remote]
+https:\/\/promotion\.waimai\.meituan\.com\/lottery\/limitcouponcomponent\/fetchcoupon url script-request-body https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js
 
 [task_local]
 #定时抢券
-58 59 15 * * * pkc-mt.js, tag=美团抢卷, enabled=true
+58 59 15 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=false
 
 */
 const $ = Env("美团抢卷");
