@@ -11,12 +11,12 @@ V2P/圈叉：
 promotion.waimai.meituan.com
 
 [rewrite_remote]
+#抓取body
 romotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon url script-request-body https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js
 
 [task_local]
 #定时抢券
-58 59 15 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=false
-
+58 59 17 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=false
 */
 const $ = Env("美团抢卷");
 const pkc_qjnum = 200;  // 重放200次

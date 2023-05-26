@@ -5,7 +5,9 @@
 promotion.waimai.meituan.com
 
 [rewrite_remote]
+#更改每天时间，强制触发抢券按钮
 promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url script-response-body https://raw.githubusercontent.com/curtinlv/qx/main/scripts/uptime-mt.js
+
 */
 
 // 这里修改来抢的时间，再开启本重写。
