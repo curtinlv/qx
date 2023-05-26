@@ -1,6 +1,6 @@
 /*
 美团抢券
-功能：qx自动重写抓取请求体 ，重放请求（定时任务）
+功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放200次，第22行自行修改。
 
 Author: Curtin
 date 2023.5.25
@@ -19,7 +19,7 @@ https:\/\/promotion\.waimai\.meituan\.com\/lottery\/limitcouponcomponent\/fetchc
 
 */
 const $ = Env("美团抢卷");
-const pkc_qjnum = 2;
+const pkc_qjnum = 200;  // 重放200次
 // 如果想查看当前是否已经抓取Body ， 把下面 pkc_select = 2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
