@@ -30,16 +30,16 @@ const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
 
-let pkc_mt_headers =  ``;
+let mt_headers =  ``;
 let pkc_mt_method  = ``;
 let pkc_mt_url = ``;
 let pkc_mt_body = ``;
 
-if ($.isNode() && process.env.pkc_mt_headers) {
-    pkc_mt_headers = process.env.pkc_mt_headers
+if ($.isNode() && process.env.mt_headers) {
+    mt_headers = process.env.mt_headers
 }
 else{
-    pkc_mt_headers = $.getval('pkc_mt_headers')
+    mt_headers = $.getval('mt_headers')
 }
 
 if ($.isNode() && process.env.pkc_mt_method) {
@@ -64,18 +64,18 @@ if ($.isNode() && process.env.pkc_mt_body) {
 else{
     pkc_mt_body = $.getval('pkc_mt_body')
 }
-// Length = pkc_mt_headers.length;
+// Length = mt_headers.length;
 
 
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
-        // pkc_mt_headers = JSON.stringify($request.headers);
-        pkc_mt_headers = JSON.stringify($request.headers);
+         mt_headers = JSON.stringify($request.headers);
+//        mt_headers = $request.headers;
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
         pkc_mt_body = $request.body;
-
-        if (pkc_mt_headers) $.setdata(pkc_mt_headers, "pkc_mt_headers");
+        $.setdata("{}", "pkc_mt_headers");
+        if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (pkc_mt_method) $.setdata(pkc_mt_method, "pkc_mt_method");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
@@ -83,7 +83,7 @@ function GetCookie() {
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
         // $.msg($.name, `获取美团抢券Url: 成功🎉`, `pkc_mt_url：${pkc_mt_url}`);
-        // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `pkc_mt_headers：${pkc_mt_headers}`);
+        // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
         $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
         $done();
     }
@@ -147,7 +147,7 @@ async function all() {
         }
     }else{
         $.msg($.name, `美团抢券-当前请求URL`, `${pkc_mt_url}`);
-        $.msg($.name, `美团抢券-当前请求Header`, `${pkc_mt_headers}`);
+        $.msg($.name, `美团抢券-当前请求Header`, `${mt_headers}`);
         $.msg($.name, `美团抢券-当前请求Body`, `${pkc_mt_body}`);
     }
 
@@ -160,7 +160,7 @@ async function pkc_mtqj(timeout = 0) {
         setTimeout(() => {
             let url = {
                 url: pkc_mt_url,
-                headers: JSON.parse(pkc_mt_headers),
+                headers: JSON.parse(mt_headers),
                 body: pkc_mt_body,
             };
             console.log(JSON.stringify(url));
