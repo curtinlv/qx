@@ -70,7 +70,7 @@ else{
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
         // pkc_mt_headers = JSON.stringify($request.headers);
-        pkc_mt_headers = $request.headers;
+        pkc_mt_headers = JSON.stringify($request.headers);
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
         pkc_mt_body = $request.body;
@@ -84,7 +84,7 @@ function GetCookie() {
         );
         // $.msg($.name, `获取美团抢券Url: 成功🎉`, `pkc_mt_url：${pkc_mt_url}`);
         // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `pkc_mt_headers：${pkc_mt_headers}`);
-        $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${$request.body}`);
+        $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
         $done();
     }
 
