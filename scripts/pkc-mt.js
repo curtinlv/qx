@@ -39,7 +39,7 @@ if ($.isNode() && process.env.pkc_mt_headers) {
     pkc_mt_headers = process.env.pkc_mt_headers
 }
 else{
-    pkc_mt_headers = $.getdata('pkc_mt_headers')
+    pkc_mt_headers = $.getval('pkc_mt_headers')
 }
 
 if ($.isNode() && process.env.pkc_mt_method) {
@@ -62,7 +62,7 @@ if ($.isNode() && process.env.pkc_mt_body) {
     pkc_mt_body = process.env.pkc_mt_body
 }
 else{
-    pkc_mt_body = $.getdata('pkc_mt_body')
+    pkc_mt_body = $.getval('pkc_mt_body')
 }
 // Length = pkc_mt_headers.length;
 
