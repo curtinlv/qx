@@ -173,6 +173,10 @@ async function pkc_mtqj(timeout = 0) {
                         console.log(`【成功抢券】：${$.signget.message}\n`);
                         $.message += `【成功抢券】：${$.signget.message}\n`;
                         pkc_flag = true;
+                    }else if ($.signget.code === 1 && $.signget.subcode === 2){
+                        console.log(`【成功抢券】：${data}\n`);
+                        $.message += `【成功抢券】：${data}\n`;
+                        pkc_flag = true;
                     }else if ($.signget.code === 1 && $.signget.subcode === 1){
                         console.log(`【抢券失败】：${data}\n`);
                         $.message += `【抢券失败】：${data}\n`;
