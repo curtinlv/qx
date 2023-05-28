@@ -177,14 +177,19 @@ async function pkc_mtqj(timeout = 0) {
                         console.log(`【成功抢券】：${data}\n`);
                         $.message += `【成功抢券】：${data}\n`;
                         pkc_flag = true;
-                    }else if ($.signget.code === 1 && $.signget.subcode === 1){
+                    }
+//                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
+//                         console.log(`【抢券失败】：${data}\n`);
+//                         $.message += `【抢券失败】：${data}\n`;
+//                         pkc_flag = true;
+//                     }
+                    else if ($.signget.code === 1 && $.signget.subcode === 3){
+                        console.log(`【继续尝试】：${data}\n`);
+                        $.message += `【继续尝试】：${data}\n`;
+                    }else{
                         console.log(`【抢券失败】：${data}\n`);
                         $.message += `【抢券失败】：${data}\n`;
                         pkc_flag = true;
-                    }
-                    else {
-                        console.log(`【继续尝试】：${data}\n`);
-                        $.message += `【继续尝试】：${data}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
