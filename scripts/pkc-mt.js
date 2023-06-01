@@ -170,8 +170,8 @@ async function pkc_mtqj(timeout = 0) {
                     $.signget = JSON.parse(data);
                     // console.log(JSON.stringify($.signget));
                     if ($.signget.code === 0 && $.signget.subcode === 0){
-                        console.log(`【成功抢券】：${$.signget.message}\n`);
-                        $.message += `【成功抢券】：${$.signget.message}\n`;
+                        console.log(`【成功抢券】：${data}\n`);
+                        $.message += `【成功抢券】：${data}\n`;
                         pkc_flag = true;
                     }else if ($.signget.code === 1 && $.signget.subcode === 2){
                         console.log(`【成功抢券】：${data}\n`);
