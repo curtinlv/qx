@@ -19,7 +19,7 @@ romotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon url script-
 58 59 17 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=false
 */
 const $ = Env("美团抢卷");
-const pkc_qjnum = 200;  // 重放200次
+const pkc_qjnum = 50;  // 重放200次
 // 如果想查看当前是否已经抓取Body ， 把下面 pkc_select = 2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
