@@ -170,12 +170,13 @@ async function pkc_mtqj(timeout = 0) {
                     $.signget = JSON.parse(data);
                     // console.log(JSON.stringify($.signget));
                     if ($.signget.code === 0 && $.signget.subcode === 0){
-                        console.log(`【成功抢券】：${data}\n`);
-                        $.message += `【成功抢券】：${data}\n`;
+//                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`;
                         pkc_flag = true;
                     }else if ($.signget.code === 1 && $.signget.subcode === 2){
-                        console.log(`【成功抢券】：${data}\n`);
-                        $.message += `【成功抢券】：${data}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`;
                         pkc_flag = true;
                     }
 //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
@@ -184,11 +185,11 @@ async function pkc_mtqj(timeout = 0) {
 //                         pkc_flag = true;
 //                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 3){
-                        console.log(`【继续尝试】：${data}\n`);
-                        $.message += `【继续尝试】：${data}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【继续尝试】：${data.msg}\n`);
+//                         $.message += `【继续尝试】：${data}\n`;
                     }else{
-                        console.log(`【抢券失败】：${data}\n`);
-                        $.message += `【抢券失败】：${data}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${data.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${data.msg}\n`;
                         pkc_flag = true;
                     }
                 } catch (e) {
