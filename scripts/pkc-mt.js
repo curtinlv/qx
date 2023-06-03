@@ -163,7 +163,7 @@ async function pkc_mtqj(timeout = 0) {
                 headers: JSON.parse(mt_headers),
                 body: pkc_mt_body,
             };
-            console.log(JSON.stringify(url));
+//             console.log(JSON.stringify(url));
             $.post(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
@@ -171,12 +171,12 @@ async function pkc_mtqj(timeout = 0) {
                     // console.log(JSON.stringify($.signget));
                     if ($.signget.code === 0 && $.signget.subcode === 0){
 //                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
-                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`);
-                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${$.signget.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${$.signget.msg}\n`;
                         pkc_flag = true;
                     }else if ($.signget.code === 1 && $.signget.subcode === 2){
-                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`);
-                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data.msg}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${$.signget.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${$.signget.msg}\n`;
                         pkc_flag = true;
                     }
 //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
@@ -185,11 +185,11 @@ async function pkc_mtqj(timeout = 0) {
 //                         pkc_flag = true;
 //                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 3){
-                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【继续尝试】：${data.msg}\n`);
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【继续尝试】：${$.signget.msg}\n`);
 //                         $.message += `【继续尝试】：${data}\n`;
                     }else{
-                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${data.msg}\n`);
-                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${data.msg}\n`;
+                        console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${$.signget.msg}\n`);
+                        $.message += `[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【抢券失败】：${$.signget.msg}\n`;
                         pkc_flag = true;
                     }
                 } catch (e) {
