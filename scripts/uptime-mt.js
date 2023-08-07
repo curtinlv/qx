@@ -52,7 +52,8 @@ if ($request.url.indexOf(path2) != -1) {
     if(typeof $response !== "undefined"){
         const params = new URLSearchParams(url.split('?')[1]);
         let couponReferIds = params.get('couponReferIds');
-        console.log(`couponReferIds=${couponReferIds}`);
+        let gdPageId = params.get('gdPageId');
+        console.log(`couponReferIds=${couponReferIds} gdPageId=${gdPageId}`);
         $notify("强制触发抢券按钮", "couponReferIds", couponReferIds);
         let obj2 = JSON.parse($response.body);
         if(obj2.data.couponInfo[couponReferIds]){
@@ -63,7 +64,8 @@ if ($request.url.indexOf(path2) != -1) {
 
         // if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (couponReferIds) $.setdata(couponReferIds, "couponReferIds");
-        $notify($.name, `获取美团couponReferIds: 成功🎉`, `couponReferIds：${couponReferIds}`);
+        if (gdPageId) $.setdata(gdPageId, "gdPageId");
+        $notify($.name, `获取美团couponReferIds: 成功🎉`, `couponReferIds：${couponReferIds} gdPageId = ${gdPageId}`);
 
 
         $done({body});

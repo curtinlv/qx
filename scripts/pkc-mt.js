@@ -20,7 +20,7 @@ promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url scr
 */
 const $ = Env("美团抢卷");
 let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
-let gdPageId = '513694';
+let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 
 const pkc_qjnum = 100;  // 重放100次
@@ -146,6 +146,12 @@ if ($.isNode() && process.env.couponReferIds) {
 }
 else{
     couponReferIds = $.getval('couponReferIds')
+}
+if ($.isNode() && process.env.gdPageId) {
+    gdPageId = process.env.gdPageId
+}
+else{
+    gdPageId = $.getval('gdPageId')
 }
 
 //
