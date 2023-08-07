@@ -19,8 +19,10 @@ promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url scr
 58 59 14 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=true
 */
 const $ = Env("美团抢卷");
-const couponReferIds = '';
-const gdPageId = '513694';
+let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
+let gdPageId = '513694';
+
+
 const pkc_qjnum = 100;  // 重放100次
 // 如果想查看当前是否已经抓取Body ， 把下面 pkc_select = 2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
@@ -132,7 +134,25 @@ else{
     mt_Cookie = $.getval('mt_Cookie')
 }
 
+if ($.isNode() && process.env.mt_Cookie) {
+    mt_Cookie = process.env.mt_Cookie
+}
+else{
+    mt_Cookie = $.getval('mt_Cookie')
+}
 
+if ($.isNode() && process.env.couponReferIds) {
+    couponReferIds = process.env.couponReferIds
+}
+else{
+    couponReferIds = $.getval('couponReferIds')
+}
+
+
+if (couponReferIds.length < 2 || gdPageId.length < 2){
+    console.log(`请先设置couponReferIds 和 gdPageId`);
+    return;
+}
 
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
