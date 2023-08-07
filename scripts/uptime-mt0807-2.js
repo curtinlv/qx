@@ -11,7 +11,7 @@ promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url scr
 */
 const $ = Env("美团触发时间、获取保存couponReferIds");
 // 这里修改来抢的时间，再开启本重写。
-const timeStr = '18:00:00';
+const timeStr = '17:29:58';
 
 const now = new Date();
 const year = now.getFullYear();
