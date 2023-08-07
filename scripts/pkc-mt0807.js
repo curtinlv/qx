@@ -332,21 +332,24 @@ async function pkc_mtqj_sx(timeout = 0) {
 async function pkc_mtqj_0807(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
+            let headers_new = {
+                'mtgsig' : mtgsig,
+                'Connection' : `keep-alive`,
+                'Accept-Encoding' : `gzip, deflate, br`,
+                'Content-Type' : `application/json`,
+                'X-Titans-User' : ``,
+                'Origin' : `https://market.waimai.meituan.com`,
+                'User-Agent' : `Mozilla/5.0 (iPhone; CPU iPhone OS 16_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TitansX/20.0.1.old KNB/1.0 iOS/16.0.2 meituangroup/com.meituan.imeituan/12.9.206 meituangroup/12.9.206 App/10110/12.9.206 iPhone/iPhone13ProMax WKWebView`,
+                'Cookie' : mt_Cookie,
+                'Host' : `promotion.waimai.meituan.com`,
+                'Referer' : `https://market.waimai.meituan.com/`,
+                'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+                'Accept' : `application/json, text/plain, */*`
+            };
             let url = {
                 url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
-                headers: JSON.parse(`{
-                    'Host': 'promotion.waimai.meituan.com',
-                    'X-Titans-User': '',
-                    'Accept': 'application/json, text/plain, */*',
-                    'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
-                    'Origin': 'https://market.waimai.meituan.com',
-                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TitansX/20.0.1.old KNB/1.0 iOS/15.3 meituangroup/com.meituan.imeituan/12.5.403 meituangroup/12.5.403 App/10110/12.5.403 iPhone/iPhone11Pro WKWebView',
-                    'Referer': 'https://market.waimai.meituan.com/',
-                    'mtgsig':${mtgsig},
-                    'Cookie': ${mt_Cookie},
-                    'Content-Type': 'application/json'
 
-                }`),
+                headers: headers_new,
                 body : `{"cType":"mtiphone","fpPlatform":5,"wxOpenId":"","appVersion":"12.9.403","mtFingerprint":${mtFingerprint}`
                 // body: JSON.stringify({
                 //     "cType": "mtiphone",
