@@ -175,11 +175,11 @@ function GetCookie() {
 
 
         $.setdata("{}", "pkc_mt_headers");
-        // if (mt_headers) $.setdata(mt_headers, "mt_headers");
+        if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         // if (pkc_mt_method) $.setdata(pkc_mt_method, "pkc_mt_method");
-        // if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
-        // if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
+        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
+        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
 
         if (mtgsig) $.setdata(mtgsig, "mtgsig");
         if (mtFingerprint) $.setdata(mtFingerprint, "mtFingerprint");
@@ -268,8 +268,8 @@ async function all() {
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             await pkc_mtqj_sx() //
-            await pkc_mtqj_0807() //
-            // await pkc_mtqj() //
+            // await pkc_mtqj_0807() //
+            await pkc_mtqj() //
             if (pkc_flag){
                 break;
             }
