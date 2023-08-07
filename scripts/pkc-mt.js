@@ -35,6 +35,12 @@ let pkc_mt_method  = ``;
 let pkc_mt_url = ``;
 let pkc_mt_body = ``;
 
+let mt_headers_sx =  ``;
+let pkc_mt_method_sx  = ``;
+let pkc_mt_url_sx = ``;
+let pkc_mt_body_sx = ``;
+
+
 if ($.isNode() && process.env.mt_headers) {
     mt_headers = process.env.mt_headers
 }
@@ -66,6 +72,35 @@ else{
 }
 // Length = mt_headers.length;
 
+if ($.isNode() && process.env.mt_headers_sx) {
+    mt_headers_sx = process.env.mt_headers_sx
+}
+else{
+    mt_headers_sx = $.getval('mt_headers_sx')
+}
+
+if ($.isNode() && process.env.pkc_mt_method_sx) {
+
+    pkc_mt_method_sx = process.env.pkc_mt_method_sx
+}
+else{
+    pkc_mt_method_sx = $.getval('pkc_mt_method_sx')
+}
+
+if ($.isNode() && process.env.pkc_mt_url_sx) {
+
+    pkc_mt_url_sx = process.env.pkc_mt_url_sx
+}
+else{
+    pkc_mt_url_sx = $.getval('pkc_mt_url_sx')
+}
+
+if ($.isNode() && process.env.pkc_mt_body_sx) {
+    pkc_mt_body_sx = process.env.pkc_mt_body_sx
+}
+else{
+    pkc_mt_body_sx = $.getval('pkc_mt_body_sx')
+}
 
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
@@ -81,6 +116,25 @@ function GetCookie() {
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
         $.log(
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
+        );
+        // $.msg($.name, `获取美团抢券Url: 成功🎉`, `pkc_mt_url：${pkc_mt_url}`);
+        // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
+        $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
+        $done();
+    }
+    if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0) {
+        mt_headers = JSON.stringify($request.headers);
+//        mt_headers = $request.headers;
+        pkc_mt_method = $request.method;
+        pkc_mt_url = $request.url;
+        pkc_mt_body = $request.body;
+        $.setdata("{}", "pkc_mt_headers_sx");
+        if (mt_headers) $.setdata(mt_headers, "mt_headers_sx");
+        if (pkc_mt_method) $.setdata(pkc_mt_method, "pkc_mt_method_sx");
+        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url_sx");
+        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body_sx");
+        $.log(
+            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url}`
         );
         // $.msg($.name, `获取美团抢券Url: 成功🎉`, `pkc_mt_url：${pkc_mt_url}`);
         // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
@@ -140,6 +194,7 @@ async function all() {
     if(pkc_select === 1){
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
+            await pkc_mtqj_sx() //
             await pkc_mtqj() //
             if (pkc_flag){
                 break;
@@ -154,6 +209,36 @@ async function all() {
 }
 
 
+//美团抢券sx
+async function pkc_mtqj_sx(timeout = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let url = {
+                url: pkc_mt_url_sx,
+                headers: JSON.parse(mt_headers_sx),
+                body: pkc_mt_body_sx,
+            };
+//             console.log(JSON.stringify(url));
+            $.post(url, async (err, resp, data) => {
+                try {
+                    if (logs) $.log(`开始抢券刷新ID🚩: ${data}`);
+                    $.signget = JSON.parse(data);
+                    // console.log(JSON.stringify($.signget));
+                    if ($.signget.code === 0 && $.signget.subcode === 0){
+                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
+                    }else{
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：失败\n`);
+                    }
+//
+                } catch (e) {
+                    $.logErr(e, resp);
+                } finally {
+                    resolve()
+                }
+            })
+        }, timeout)
+    })
+}
 //美团抢券
 async function pkc_mtqj(timeout = 0) {
     return new Promise((resolve) => {
