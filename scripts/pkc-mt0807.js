@@ -347,7 +347,8 @@ async function pkc_mtqj_0807(timeout = 0) {
                 'Accept' : `application/json, text/plain, */*`
             };
             let url = {
-                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
+                // url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
+                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&geoType=2&gdPageId=${gdPageId}&pageId=516390&version=1&utmSource=AppStore&utmCampaign=AgroupBgroupD0H0&instanceId=&componentId=&yodaReady=h5&csecplatform=4&csecversion=2.1.0`,
 
                 headers: headers_new,
                 body : `{"cType":"mtiphone","fpPlatform":5,"wxOpenId":"","appVersion":"12.9.403","mtFingerprint":${mtFingerprint}`
