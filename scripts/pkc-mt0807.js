@@ -342,8 +342,8 @@ async function pkc_mtqj_0807(timeout = 0) {
                     'Origin': 'https://market.waimai.meituan.com',
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TitansX/20.0.1.old KNB/1.0 iOS/15.3 meituangroup/com.meituan.imeituan/12.5.403 meituangroup/12.5.403 App/10110/12.5.403 iPhone/iPhone11Pro WKWebView',
                     'Referer': 'https://market.waimai.meituan.com/',
-                    'mtgsig':mtgsig,
-                    'Cookie': mt_Cookie,
+                    'mtgsig':${mtgsig},
+                    'Cookie': ${mt_Cookie},
                     'Content-Type': 'application/json'
 
                 }`),
