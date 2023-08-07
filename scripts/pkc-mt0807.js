@@ -24,7 +24,7 @@ let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，�
 
 
 const pkc_qjnum = 100;  // 重放100次
-// 如果想查看当前是否已经抓取Body ， 把下面 pkc_select = 2;
+// 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
 // $.idx = ($.idx = ($.getval('HuaHuiSuffix') || '1') - 1) > 0 ? ($.idx + 1 + '') : ''; // 账号扩展字符
@@ -333,7 +333,7 @@ async function pkc_mtqj_0807(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
-                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}&`,
+                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
                 headers: {
                     'Host': 'promotion.waimai.meituan.com',
                     'X-Titans-User': '',
@@ -347,13 +347,14 @@ async function pkc_mtqj_0807(timeout = 0) {
                     'Content-Type': 'application/json'
 
                 },
-                body: JSON.stringify({
-                    "cType": "mtiphone",
-                    "fpPlatform": 5,
-                    "wxOpenId": "",
-                    "appVersion": "12.9.403",
-                    "mtFingerprint": mtFingerprint,
-                }),
+                body : `{"cType":"mtiphone","fpPlatform":5,"wxOpenId":"","appVersion":"12.9.403","mtFingerprint":${mtFingerprint}`
+                // body: JSON.stringify({
+                //     "cType": "mtiphone",
+                //     "fpPlatform": 5,
+                //     "wxOpenId": "",
+                //     "appVersion": "12.9.403",
+                //     "mtFingerprint": mtFingerprint,
+                // }),
             };
             console.log(JSON.stringify(url));
             $.post(url, async (err, resp, data) => {
