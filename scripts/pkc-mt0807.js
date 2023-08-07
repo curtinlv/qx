@@ -305,7 +305,7 @@ async function pkc_mtqj_sx(timeout = 0) {
                 body: ``,
             };
 
-            console.log(JSON.stringify(url));
+            // console.log(JSON.stringify(url));
             $.get(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券刷新ID🚩: ${data}`);
@@ -334,7 +334,7 @@ async function pkc_mtqj_0807(timeout = 0) {
         setTimeout(() => {
             let url = {
                 url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
-                headers: {
+                headers: JSON.parse(`{
                     'Host': 'promotion.waimai.meituan.com',
                     'X-Titans-User': '',
                     'Accept': 'application/json, text/plain, */*',
@@ -342,11 +342,11 @@ async function pkc_mtqj_0807(timeout = 0) {
                     'Origin': 'https://market.waimai.meituan.com',
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TitansX/20.0.1.old KNB/1.0 iOS/15.3 meituangroup/com.meituan.imeituan/12.5.403 meituangroup/12.5.403 App/10110/12.5.403 iPhone/iPhone11Pro WKWebView',
                     'Referer': 'https://market.waimai.meituan.com/',
-                    'mtgsig': mtgsig,
+                    'mtgsig':mtgsig,
                     'Cookie': mt_Cookie,
                     'Content-Type': 'application/json'
 
-                },
+                }`),
                 body : `{"cType":"mtiphone","fpPlatform":5,"wxOpenId":"","appVersion":"12.9.403","mtFingerprint":${mtFingerprint}`
                 // body: JSON.stringify({
                 //     "cType": "mtiphone",
