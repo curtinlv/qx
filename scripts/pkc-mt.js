@@ -148,11 +148,11 @@ else{
     couponReferIds = $.getval('couponReferIds')
 }
 
-
-if (couponReferIds.length < 2 || gdPageId.length < 2){
-    console.log(`请先设置couponReferIds 和 gdPageId`);
-    return;
-}
+//
+// if (couponReferIds.length < 2 || gdPageId.length < 2){
+//     console.log(`请先设置couponReferIds 和 gdPageId`);
+//     return;
+// }
 
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
