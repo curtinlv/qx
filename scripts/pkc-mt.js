@@ -105,21 +105,28 @@ else{
 function GetCookie() {
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0) {
          mt_headers = JSON.stringify($request.headers);
-//        mt_headers = $request.headers;
+        mtgsig = $request.headers.mtgsig;
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
         pkc_mt_body = $request.body;
+        mt_body = JSON.parse($request.body);
+        mtFingerprint = mt_body.mtFingerprint;
         $.setdata("{}", "pkc_mt_headers");
         if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (pkc_mt_method) $.setdata(pkc_mt_method, "pkc_mt_method");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
+
+        if (mtgsig) $.setdata(mtgsig, "mtgsig");
+        if (mtFingerprint) $.setdata(mtFingerprint, "mtFingerprint");
         $.log(
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
         // $.msg($.name, `获取美团抢券Url: 成功🎉`, `pkc_mt_url：${pkc_mt_url}`);
         // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
-        $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
+        // $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
+        $.msg($.name, `获取美团mtgsig: 成功🎉`, `mtgsig：${mtgsig}`);
+        $.msg($.name, `获取美团mtFingerprint: 成功🎉`, `mtFingerprint：${mtFingerprint}`);
         $done();
     }
 
