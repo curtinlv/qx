@@ -269,9 +269,12 @@ async function all() {
             }
         }
     }else{
-        $.msg($.name, `美团抢券-当前请求URL`, `${pkc_mt_url}`);
-        $.msg($.name, `美团抢券-当前请求Header`, `${mt_headers}`);
-        $.msg($.name, `美团抢券-当前请求Body`, `${pkc_mt_body}`);
+        $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
+        $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
+        $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
+        $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
+
+
     }
 
 }
