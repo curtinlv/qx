@@ -20,7 +20,15 @@ const day = now.getDate().toString().padStart(2, '0');
 const dateStr = `${year}-${month}-${day} ${timeStr}`;
 
 // const dateStr = '2023-01-22 12:58:38';
-const timestamp = new Date(dateStr).getTime();
+// const timestamp = new Date(dateStr).getTime();
+
+// const dateStr = '2023-06-02 17:00:00';
+// const timestamp = new Date(dateStr).getTime();
+// 将时间字符串转换为本地时间对象
+const localTime = new Date(dateStr.replace(/-/g, '/'));
+
+// 将本地时间转换为时间戳（单位：秒）
+const timestamp = Math.floor(localTime.getTime());
 
 
 

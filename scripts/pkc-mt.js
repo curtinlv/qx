@@ -333,7 +333,7 @@ async function pkc_mtqj_0807(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
-                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}&`,
+                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
                 headers: {
                     'Host': 'promotion.waimai.meituan.com',
                     'X-Titans-User': '',
@@ -352,7 +352,7 @@ async function pkc_mtqj_0807(timeout = 0) {
                     "fpPlatform": 5,
                     "wxOpenId": "",
                     "appVersion": "12.9.403",
-                    "mtFingerprint": mtFingerprint,
+                    "mtFingerprint": mtFingerprint
                 }),
             };
             console.log(JSON.stringify(url));
