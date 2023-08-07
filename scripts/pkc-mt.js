@@ -122,6 +122,7 @@ function GetCookie() {
         $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body}`);
         $done();
     }
+    
     if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0) {
         mt_headers_sx = JSON.stringify($request.headers);
 //        mt_headers = $request.headers;
