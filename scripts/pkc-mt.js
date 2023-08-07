@@ -219,7 +219,7 @@ async function pkc_mtqj_sx(timeout = 0) {
                 body: pkc_mt_body_sx,
             };
 //             console.log(JSON.stringify(url));
-            $.post(url, async (err, resp, data) => {
+            $.get(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券刷新ID🚩: ${data}`);
                     $.signget = JSON.parse(data);
