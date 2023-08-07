@@ -167,13 +167,13 @@ function GetCookie() {
         mtgsig = $request.headers.mtgsig;
         mt_Cookie = $request.headers.Cookie;
         pkc_mt_body = $request.body;
+        mt_body = JSON.parse($request.body);
         mtFingerprint = mt_body.mtFingerprint;
 
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
 
 
-        mt_body = JSON.parse($request.body);
         $.setdata("{}", "pkc_mt_headers");
         // if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
