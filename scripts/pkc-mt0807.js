@@ -332,7 +332,7 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
-                url: `https://promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info?couponReferIds=${couponReferIds}`,
+                url: `https://promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info?isInvalidCouponFilter=0&couponReferIds=${couponReferIds}`,
                 headers: {
                     'Host': 'promotion.waimai.meituan.com',
                     'Origin': 'https://market.waimai.meituan.com',
