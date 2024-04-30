@@ -195,25 +195,25 @@ function GetCookie() {
         $done();
     }
 
-    if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
-        mt_headers_sx = JSON.stringify($request.headers);
-//        mt_headers = $request.headers;
-        pkc_mt_method_sx = $request.method;
-        pkc_mt_url_sx = $request.url;
-        pkc_mt_body_sx = $request.body;
-        $.setdata("{}", "pkc_mt_headers_sx");
-        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
-        if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
-        if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
-        if (pkc_mt_body_sx) $.setdata(pkc_mt_body_sx, "pkc_mt_body_sx");
-        $.log(
-            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
-        );
-        // $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
-        // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
-        // $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body_sx}`);
-        $done();
-    }
+//     if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
+//         mt_headers_sx = JSON.stringify($request.headers);
+// //        mt_headers = $request.headers;
+//         pkc_mt_method_sx = $request.method;
+//         pkc_mt_url_sx = $request.url;
+//         pkc_mt_body_sx = $request.body;
+//         $.setdata("{}", "pkc_mt_headers_sx");
+//         if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
+//         if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
+//         if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
+//         if (pkc_mt_body_sx) $.setdata(pkc_mt_body_sx, "pkc_mt_body_sx");
+//         $.log(
+//             `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
+//         );
+//         // $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
+//         // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
+//         // $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body_sx}`);
+//         $done();
+//     }
 
 
 
@@ -268,6 +268,7 @@ async function all() {
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             await pkc_mtqj_sx() //
+            await pkc_mtqj_rights_sx()
             // await pkc_mtqj_0807() //
             await pkc_mtqj() //
             if (pkc_flag){
@@ -291,8 +292,17 @@ async function pkc_mtqj_sx(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
-                url: pkc_mt_url_sx,
-                headers: JSON.parse(mt_headers_sx),
+                url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/info?couponReferIds=${couponReferIds}`,
+                headers: {
+                    'Host': 'promotion.waimai.meituan.com',
+                    'Origin': 'https://market.waimai.meituan.com',
+                    'Connection': 'keep-alive',
+                    'Accept': 'application/json, text/plain, */*',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.32(0x18002038) NetType/4G Language/zh_CN',
+                    'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+                    'Referer': 'https://market.waimai.meituan.com/',
+                    'Cookie': mt_Cookie,
+                },
                 body: ``,
             };
 
@@ -300,6 +310,46 @@ async function pkc_mtqj_sx(timeout = 0) {
             $.get(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券刷新ID🚩: ${data}`);
+                    $.signget = JSON.parse(data);
+                    // console.log(JSON.stringify($.signget));
+                    if ($.signget.code === 0 && $.signget.subcode === 0){
+                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
+                    }else{
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：失败\n`);
+                    }
+//
+                } catch (e) {
+                    $.logErr(e, resp);
+                } finally {
+                    resolve()
+                }
+            })
+        }, timeout)
+    })
+}
+//美团抢券sx rights
+async function pkc_mtqj_rights_sx(timeout = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let url = {
+                url: `https://promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info?couponReferIds=${couponReferIds}`,
+                headers: {
+                    'Host': 'promotion.waimai.meituan.com',
+                    'Origin': 'https://market.waimai.meituan.com',
+                    'Connection': 'keep-alive',
+                    'Accept': 'application/json, text/plain, */*',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.32(0x18002038) NetType/4G Language/zh_CN',
+                    'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
+                    'Referer': 'https://market.waimai.meituan.com/',
+                    'Cookie': mt_Cookie,
+                },
+                body: ``,
+            };
+
+            // console.log(JSON.stringify(url));
+            $.get(url, async (err, resp, data) => {
+                try {
+                    if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${data}`);
                     $.signget = JSON.parse(data);
                     // console.log(JSON.stringify($.signget));
                     if ($.signget.code === 0 && $.signget.subcode === 0){
