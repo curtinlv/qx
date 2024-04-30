@@ -195,7 +195,7 @@ function GetCookie() {
         $done();
     }
 
-    if ($request && $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0) {
+    if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
         mt_headers_sx = JSON.stringify($request.headers);
 //        mt_headers = $request.headers;
         pkc_mt_method_sx = $request.method;
