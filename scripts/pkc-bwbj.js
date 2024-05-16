@@ -156,7 +156,7 @@ async function all() {
 
 
 //美团抢券
-async function pkc_qj(timeout = 0) {
+async function pkc_qj(timeout = 1000) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
