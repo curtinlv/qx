@@ -1,6 +1,6 @@
 /*
 美团抢券-夏天来了
-功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放60次，第26行自行修改。
+功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放60次，第22行自行修改。
 
 Author: Curtin
 date 2025.5.10
@@ -19,11 +19,7 @@ rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-bo
 58 59 9,11,13 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt-xtll.js, tag=美团抢卷-夏天来了, enabled=true
 */
 const $ = Env("美团抢卷-夏天来了");
-let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
-let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
-
-
-const pkc_qjnum = 60;  // 重放100次
+const pkc_qjnum = 60;  // 重放60次
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -35,11 +31,7 @@ const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
 
 
-let mtgsig  = ``;
-let mtFingerprint = ``;
 let mt_Cookie = ``;
-
-
 
 let mt_headers =  ``;
 let pkc_mt_method  = ``;
@@ -114,19 +106,6 @@ else{
 }
 
 
-if ($.isNode() && process.env.mtgsig) {
-    mtgsig = process.env.mtgsig
-}
-else{
-    mtgsig = $.getval('mtgsig')
-}
-if ($.isNode() && process.env.mtFingerprint) {
-    mtFingerprint = process.env.mtFingerprint
-}
-else{
-    mtFingerprint = $.getval('mtFingerprint')
-}
-
 if ($.isNode() && process.env.mt_Cookie) {
     mt_Cookie = process.env.mt_Cookie
 }
@@ -140,40 +119,26 @@ if ($.isNode() && process.env.mt_Cookie) {
 else{
     mt_Cookie = $.getval('mt_Cookie')
 }
-
-// if ($.isNode() && process.env.couponReferIds) {
-//     couponReferIds = process.env.couponReferIds
-// }
-// else{
-//     couponReferIds = $.getval('couponReferIds')
-// }
-// if ($.isNode() && process.env.gdPageId) {
-//     gdPageId = process.env.gdPageId
-// }
-// else{
-//     gdPageId = $.getval('gdPageId')
-// }
 
 
 function GetCookie() {
-
     if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
-        mt_headers_sx = JSON.stringify($request.headers);
-//        mt_headers = $request.headers;
-        pkc_mt_method_sx = $request.method;
-        pkc_mt_url_sx = $request.url;
-        pkc_mt_body_sx = $request.body;
-        $.setdata("{}", "pkc_mt_headers_sx");
-        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
-        if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
-        if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
-        if (pkc_mt_body_sx) $.setdata(pkc_mt_body_sx, "pkc_mt_body_sx");
+         mt_headers = JSON.stringify($request.headers);
+        mt_Cookie = $request.headers.Cookie;
+        pkc_mt_body = $request.body;
+        mt_body = JSON.parse($request.body);
+        pkc_mt_method = $request.method;
+        pkc_mt_url = $request.url;
+        $.setdata("{}", "pkc_mt_headers");
+        if (mt_headers) $.setdata(mt_headers, "mt_headers");
+        if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
+        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
+        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
+
         $.log(
-            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
+            `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
-        $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
-        // $.msg($.name, `获取美团抢券Headers: 成功🎉`, `mt_headers：${mt_headers}`);
-        // $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body_sx}`);
+        $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `mt_Cookie：${mt_Cookie}`);
         $done();
     }
     if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0)) {
@@ -194,7 +159,6 @@ function GetCookie() {
     }
 
 }
-
 console.log(
     `================== 脚本执行 - 北京时间(UTC+8)：${new Date(
         new Date().getTime() +
@@ -250,12 +214,9 @@ async function all() {
             }
         }
     }else{
-        $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
-        $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
+        $.msg($.name, `美团抢券-当前请求pkc_mt_url`, `${pkc_mt_url}`);
         $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
-        $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
-
-
+        $.msg($.name, `美团抢券-当前请求pkc_mt_body`, `${pkc_mt_body}`);
     }
 
 }
@@ -273,12 +234,7 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
                 try {
                     if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${data}`);
                     $.signget = JSON.parse(data);
-                    // console.log(JSON.stringify($.signget));
-                    if ($.signget.code === 0 && $.signget.subcode === 0){
-                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
-                    }else{
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：失败\n`);
-                    }
+                    console.log(JSON.stringify($.signget));
 //
                 } catch (e) {
                     $.logErr(e, resp);
