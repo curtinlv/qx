@@ -1,6 +1,6 @@
 /*
 美团抢券-夏天来了
-功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放100次，第26行自行修改。
+功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放60次，第26行自行修改。
 
 Author: Curtin
 date 2025.5.10
@@ -16,14 +16,14 @@ rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-bo
 
 [task_local]
 # 定时抢券
-58 59 9,11,13 * * * pkc-mt-xtll.js, tag=美团抢卷-夏天来了, enabled=true
+58 59 9,11,13 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt-xtll.js, tag=美团抢卷-夏天来了, enabled=true
 */
 const $ = Env("美团抢卷-夏天来了");
 let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 
-const pkc_qjnum = 100;  // 重放100次
+const pkc_qjnum = 60;  // 重放100次
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -306,17 +306,17 @@ async function pkc_mtqj(timeout = 0) {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
                     $.signget = JSON.parse(data);
                     // console.log(JSON.stringify($.signget));
-                    if ($.signget.code === 0 && $.signget.subcode === 0){
+                    if ($.signget.code === 0 && $.signget.subCode === 0){
 //                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.msg}\n`);
                         $.message += `【成功抢券】：${$.signget.msg}\n`;
                         pkc_flag = true;
-                    }else if ($.signget.code === 1){
+                    }else if ($.signget.code === 1 && $.signget.subCode ===  9017){
                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${$.signget.msg}\n`);
-                        $.message += `【继续尝试】：${$.signget.msg}\n`;
+                        $.message += `【来晚了】：${$.signget.msg}\n`;
                        pkc_flag = true;
                     }
-                    else if ($.signget.code === 1 && $.signget.subcode === 3){
+                    else if ($.signget.code === 1){
                         console.log(`【继续尝试】：${$.signget.msg}\n`);
                     }else{
                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${$.signget.msg}\n`);
