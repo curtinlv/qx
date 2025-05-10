@@ -1,6 +1,6 @@
 /*
 美团抢券
-功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放100次，第22行自行修改。
+功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放50次，第26行自行修改。
 
 Author: Curtin
 date 2023.5.25
@@ -12,18 +12,17 @@ https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc, up
 
 [rewrite_local]
 # 更改时间（uptime-mt.js文件保存到qx目录文件scripts下面，抓包时候就改下时间。）
-promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url script-response-body uptime-mt.js
 
 [task_local]
 # 定时抢券
-58 59 14 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=true
+58 59 14 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt0807.js, tag=美团抢卷, enabled=true
 */
 const $ = Env("美团抢卷");
 let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 
-const pkc_qjnum = 100;  // 重放100次
+const pkc_qjnum = 50;  // 重放50次
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -33,7 +32,7 @@ const logs = 0; // 0为关闭日志，1为开启
 const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
-
+let isXtll = false;
 
 let mtgsig  = ``;
 let mtFingerprint = ``;
@@ -153,12 +152,10 @@ if ($.isNode() && process.env.gdPageId) {
 else{
     gdPageId = $.getval('gdPageId')
 }
-
-//
-// if (couponReferIds.length < 2 || gdPageId.length < 2){
-//     console.log(`请先设置couponReferIds 和 gdPageId`);
-//     return;
-// }
+if (pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
+    console.log("夏天来了")
+    isXtll = true;
+}
 
 function GetCookie() {
     if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/fetchcoupon") >= 0)) {
@@ -194,8 +191,27 @@ function GetCookie() {
         // $.msg($.name, `获取美团mtFingerprint: 成功🎉`, `mtFingerprint：${mtFingerprint}`);
         $done();
     }
+    if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
+         mt_headers = JSON.stringify($request.headers);
+         mt_Cookie = $request.headers.Cookie;
+        pkc_mt_body = $request.body;
+        mt_body = JSON.parse($request.body);
+        pkc_mt_method = $request.method;
+        pkc_mt_url = $request.url;
+        $.setdata("{}", "pkc_mt_headers");
+        if (mt_headers) $.setdata(mt_headers, "mt_headers");
+        if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
+        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
+        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
 
-    if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
+        $.log(
+            `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
+        );
+        $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `mt_Cookie：${mt_Cookie}`);
+        $done();
+    }
+
+    if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
         mt_headers_sx = JSON.stringify($request.headers);
 //        mt_headers = $request.headers;
         pkc_mt_method_sx = $request.method;
@@ -214,9 +230,6 @@ function GetCookie() {
         // $.msg($.name, `获取美团抢券Body: 成功🎉`, `pkc_mt_body：${pkc_mt_body_sx}`);
         $done();
     }
-
-
-
 }
 
 console.log(
@@ -226,10 +239,6 @@ console.log(
         8 * 60 * 60 * 1000
     ).toLocaleString()} =====================\n`
 );
-// console.log(
-//     `============ 共 ${Length} 个${$.name}账号=============\n`
-// );
-
 
 let isGetCookie = typeof $request !== 'undefined'
 
@@ -239,12 +248,8 @@ if (isGetCookie) {
 } else {
 
     !(async () => {
-//        await signget();
-//         await geteventID() // 获取最新抽奖id
         await all();
         await msgShow();
-
-
 
     })()
         .catch((e) => {
@@ -267,20 +272,25 @@ async function all() {
     if(pkc_select === 1){
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
-            await pkc_mtqj_sx() //
             await pkc_mtqj_rights_sx()
-            // await pkc_mtqj_0807() //
-            await pkc_mtqj() //
-            if (pkc_flag){
+            if (isXtll){
+                await pkc_mtqj_xtll() //
+            }else{
+                await pkc_mtqj_sx() //
+                await pkc_mtqj() //
+            }
+            if (pkc_flag || isOutTime()){
                 break;
             }
         }
     }else{
         $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
         $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
-        $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
         $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
 
+        $.msg($.name, `美团抢券-当前请求pkc_mt_url`, `${pkc_mt_url}`);
+        $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
+        $.msg($.name, `美团抢券-当前请求pkc_mt_body`, `${pkc_mt_body}`);
 
     }
 
@@ -359,78 +369,6 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     })
 }
 
-//
-// //美团抢券
-// async function pkc_mtqj_0807(timeout = 0) {
-//     return new Promise((resolve) => {
-//         setTimeout(() => {
-//             let headers_new = {
-//                 'mtgsig' : mtgsig,
-//                 'Connection' : `keep-alive`,
-//                 'Accept-Encoding' : `gzip, deflate, br`,
-//                 'Content-Type' : `application/json`,
-//                 'X-Titans-User' : ``,
-//                 'Origin' : `https://market.waimai.meituan.com`,
-//                 'User-Agent' : `Mozilla/5.0 (iPhone; CPU iPhone OS 16_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 TitansX/20.0.1.old KNB/1.0 iOS/16.0.2 meituangroup/com.meituan.imeituan/12.9.206 meituangroup/12.9.206 App/10110/12.9.206 iPhone/iPhone13ProMax WKWebView`,
-//                 'Cookie' : mt_Cookie,
-//                 'Host' : `promotion.waimai.meituan.com`,
-//                 'Referer' : `https://market.waimai.meituan.com/`,
-//                 'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
-//                 'Accept' : `application/json, text/plain, */*`
-//             };
-//             let url = {
-//                 // url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&gdPageId=${gdPageId}`,
-//                 url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon?couponReferId=${couponReferIds}&geoType=2&gdPageId=${gdPageId}&pageId=516390&version=1&utmSource=AppStore&utmCampaign=AgroupBgroupD0H0&instanceId=&componentId=&yodaReady=h5&csecplatform=4&csecversion=2.1.0`,
-//
-//                 headers: headers_new,
-//                 body : `{"cType":"mtiphone","fpPlatform":5,"wxOpenId":"","appVersion":"12.9.403","mtFingerprint":${mtFingerprint}`
-//                 // body: JSON.stringify({
-//                 //     "cType": "mtiphone",
-//                 //     "fpPlatform": 5,
-//                 //     "wxOpenId": "",
-//                 //     "appVersion": "12.9.403",
-//                 //     "mtFingerprint": mtFingerprint,
-//                 // }),
-//             };
-//             console.log(JSON.stringify(url));
-//             $.post(url, async (err, resp, data) => {
-//                 try {
-//                     if (logs) $.log(`开始抢券🚩: ${data}`);
-//                     $.signget = JSON.parse(data);
-//                     // console.log(JSON.stringify($.signget));
-//                     if ($.signget.code === 0 && $.signget.subcode === 0){
-// //                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
-//                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.msg}\n`);
-//                         $.message += `【成功抢券】：${$.signget.msg}\n`;
-//                         pkc_flag = true;
-//                     }else if ($.signget.code === 1 && $.signget.subcode === 2){
-//                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${$.signget.msg}\n`);
-//                         $.message += `【继续尝试】：${$.signget.msg}\n`;
-//                        pkc_flag = true;
-//                     }
-// //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
-// //                         console.log(`【抢券失败】：${data}\n`);
-// //                         $.message += `【抢券失败】：${data}\n`;
-// //                         pkc_flag = true;
-// //                     }
-//                     else if ($.signget.code === 1 && $.signget.subcode === 3){
-//                         console.log(`【继续尝试】：${$.signget.msg}\n`);
-// //                         $.message += `【继续尝试】：${data}\n`;
-//                     }else{
-//                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${$.signget.msg}\n`);
-//                         $.message += `【抢券失败】：${$.signget.msg}\n`;
-//                         pkc_flag = true;
-//                     }
-//                 } catch (e) {
-//                     $.logErr(e, resp);
-//                 } finally {
-//                     resolve()
-//                 }
-//             })
-//         }, timeout)
-//     })
-// }
-
 //美团抢券
 async function pkc_mtqj(timeout = 0) {
     return new Promise((resolve) => {
@@ -479,6 +417,49 @@ async function pkc_mtqj(timeout = 0) {
     })
 }
 
+
+//美团抢券-夏天来了
+async function pkc_mtqj_xtll(timeout = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let url = {
+                url: pkc_mt_url,
+                headers: JSON.parse(mt_headers),
+                body: pkc_mt_body,
+            };
+//             console.log(JSON.stringify(url));
+            $.post(url, async (err, resp, data) => {
+                try {
+                    if (logs) $.log(`开始抢券🚩: ${data}`);
+                    $.signget = JSON.parse(data);
+                    // console.log(JSON.stringify($.signget));
+                    if ($.signget.code === 0 && $.signget.subCode === 0){
+//                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.msg}\n`);
+                        $.message += `【成功抢券】：${JSON.stringify($.signget)}\n`;
+                        pkc_flag = true;
+                    }else if ($.signget.code === 1 && $.signget.subCode ===  9017){
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${$.signget.msg}\n`);
+                        $.message += `【来晚了】：${JSON.stringify($.signget)}\n`;
+                       pkc_flag = true;
+                    }
+                    else if ($.signget.code === 1){
+                        console.log(`【继续尝试】：${JSON.stringify($.signget)}\n`);
+                    }else{
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${$.signget.msg}\n`);
+                        $.message += `【抢券失败】：${JSON.stringify($.signget)}\n`;
+                        pkc_flag = true;
+                    }
+                } catch (e) {
+                    $.logErr(e, resp);
+                } finally {
+                    resolve()
+                }
+            })
+        }, timeout)
+    })
+}
+
 function msgShow() {
     return new Promise(async resolve => {
         if (notifyInterval != 1) {
@@ -497,6 +478,18 @@ function msgShow() {
     })
 }
 
+function isOutTime() {
+    const now = new Date();
+    const minutes = now.getMinutes(); // 获取当前分钟（0-59）
+    const seconds = now.getSeconds(); // 获取当前秒数（0-59）
+    // 判断是否为整点（分钟为0）
+    if (minutes === 0) {
+        // 如果是整点，再判断秒数是否大于3
+        return seconds > 3;
+    }
+    // 如果不是整点，直接返回 false
+    return false;
+}
 // prettier-ignore
 function Env(t, e) {
     class s {
