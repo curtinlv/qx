@@ -8,7 +8,7 @@ date 2023.5.25
 V2P/圈叉：
 # 重写
 [rewrite_remote]
-https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc, update-interval=172800, opt-parser=false, enabled=true
+https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc-美团, update-interval=172800, opt-parser=false, enabled=true
 
 [rewrite_local]
 # 更改时间（uptime-mt.js文件保存到qx目录文件scripts下面，抓包时候就改下时间。）
