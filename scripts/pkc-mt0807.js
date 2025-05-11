@@ -10,7 +10,6 @@ V2P/圈叉：
 [rewrite_remote]
 # 只需要添加这个远程重写即可（以前的可以删掉）。uptime-mt.js文件保存到qx目录文件scripts下面，抓包时候就改下时间。
 https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc-美团, update-interval=172800, opt-parser=false, inserted-resource=true, enabled=true
-[rewrite_local]
 
 [task_local]
 # 定时抢券，根据活动时间调整，一般改整点即可，如15点抢的，就改14点
