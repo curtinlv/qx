@@ -49,6 +49,15 @@ if (url.indexOf(path1) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
         obj2.data.systemTimestamp=timestamp;
+        obj2.data.canRetry=true;
+        let nNun = 0;
+        for (let scheduleInfoList = obj2.data.result.scheduleInfoList){
+            if (scheduleInfoList['status'] === 'NOT_STATR'){
+                obj2.data.result.scheduleInfoList[nNun]['status']='STATR'
+                break;
+            }
+            nNun++;
+        }
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
         $done({body});
