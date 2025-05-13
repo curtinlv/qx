@@ -8,7 +8,7 @@ date 2025.5.13
 V2P/圈叉：
 ########################### 开始
 [rewrite_remote]
-# 注意是远程订阅。uptime-mt.js文件保存到qx目录文件scripts下面，抓包时候就改下时间。
+# 注意是远程订阅。uptime-elm.js文件保存到qx目录文件scripts下面，抓包时候就改下时间。
 https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/elm.conf, tag=pkc-饿了么, update-interval=172800, opt-parser=false, inserted-resource=true, enabled=true
 
 [task_local]
