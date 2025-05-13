@@ -70,6 +70,7 @@ else{
 function GetCookie() {
     if ($request && ($request.url.indexOf("waimai-guide.ele.me/h5/mtop.alsc.upp.market.timelimitdraw.draw") >= 0)) {
         pkc_elm_headers = JSON.stringify($request.headers);
+        $.log(`[${$.name}] 获取饿了么抢券请求体Body✅: 成功,request.body: ${request.body}`);
         pkc_elm_body = $request.body;
         pkc_elm_method = $request.method;
         pkc_elm_url = $request.url;
@@ -78,9 +79,8 @@ function GetCookie() {
         if (pkc_elm_url) $.setdata(pkc_elm_url, "pkc_elm_url");
         if (pkc_elm_body) $.setdata(pkc_elm_body, "pkc_elm_body");
         if (pkc_elm_method) $.setdata(pkc_elm_method, "pkc_elm_method");
-        $.log(
-            `[${$.name}] 获取饿了么抢券请求体✅: 成功,pkc_elm_url: ${pkc_elm_url}`
-        );
+        $.log(`[${$.name}] 获取饿了么抢券请求Url✅: 成功,pkc_elm_url: ${pkc_elm_url}`);
+        $.msg($.name, `获取饿了么抢券请求体✅: 成功,pkc_elm_url：${pkc_elm_url}`);
         $done();
     }
 }
