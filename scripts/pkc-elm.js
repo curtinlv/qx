@@ -136,7 +136,7 @@ async function all() {
         }
     }else{
         $.msg($.name, `饿了么抢券-当前请求pkc_elm_url`, `${pkc_elm_url}`);
-        $.msg($.name, `饿了么抢券-当前请求pkc_elm_body`, `${pkc_elm_headers}`);
+        $.msg($.name, `饿了么抢券-当前请求pkc_elm_headers`, `${pkc_elm_headers}`);
         $.msg($.name, `饿了么抢券-当前请求pkc_elm_body`, `${pkc_elm_body}`);
     }
 }
