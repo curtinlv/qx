@@ -1,6 +1,6 @@
 /*
 饿了么抢券 版本：1.0
-功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放50次，第20行自行修改。
+功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放100次，第20行自行修改。
 
 Author: Curtin
 date 2025.5.13
@@ -17,7 +17,7 @@ https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/elm.conf, tag=pkc-饿
 ########################### 结束
 */
 const $ = Env("饿了么抢卷18-18");
-const pkc_qjnum = 50;  // 重放50次
+const pkc_qjnum = 100;  // 重放100次
 const timeoutMs = 10;  // 最多执行10秒即停止重放
 const timeoutMs2 = 6;  // 整点后，大于N秒即停止重放,如6秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
