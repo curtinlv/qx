@@ -51,9 +51,9 @@ if (url.indexOf(path1) != -1) {
         obj2.data.systemTimestamp=timestamp;
         obj2.data.canRetry=true;
         let nNun = 0;
-        for (let scheduleInfoList = obj2.data.result.scheduleInfoList){
-            if (scheduleInfoList['status'] === 'NOT_STATR'){
-                obj2.data.result.scheduleInfoList[nNun]['status']='STATR'
+        for (let scheduleInfoList in obj2.data.result.scheduleInfoList){
+            if (scheduleInfoList['status'] === 'NO_INVENTORY'){
+                obj2.data.result.scheduleInfoList[nNun]['status']='HAS_END'
                 break;
             }
             nNun++;
