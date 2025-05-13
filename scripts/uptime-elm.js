@@ -11,7 +11,7 @@ https://waimai-guide.ele.me/h5/mtop.alsc.upp.market.timelimitdraw.consultunit ur
 */
 const $ = Env("饿了么18-18");
 // 这里修改来抢的时间，再开启本重写。
-const timeStr = '14:00:00';
+const timeStr = '14:00:00'; // 可以不用填了，已自动获取开抢时间
 
 const now = new Date();
 const year = now.getFullYear();
