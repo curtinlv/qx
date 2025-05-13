@@ -130,7 +130,7 @@ async function all() {
             if (pkc_flag || isOutTime(0, timeoutMs2)){
                 break;
             }
-            if (Date.now() - startTime > timeoutMs){
+            if (Date.now() - startTime > (timeoutMs * 1000)){
                 break;
             }
         }
