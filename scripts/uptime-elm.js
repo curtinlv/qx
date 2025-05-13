@@ -54,6 +54,10 @@ if (url.indexOf(path1) != -1) {
         for (let scheduleInfoList in obj2.data.result.scheduleInfoList){
             if (scheduleInfoList['status'] === 'NO_INVENTORY'){
                 obj2.data.result.scheduleInfoList[nNun]['status']='HAS_END'
+            }
+            if (scheduleInfoList['status'] === 'NOT_START'){
+                obj2.data.result.scheduleInfoList[nNun]['status']='HAS_END'
+                obj2.data.systemTimestamp=obj2.data.result.scheduleInfoList[nNun]['startTime'];
                 break;
             }
             nNun++;
