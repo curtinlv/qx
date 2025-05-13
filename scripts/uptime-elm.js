@@ -50,15 +50,15 @@ if (url.indexOf(path1) != -1) {
         let obj2 = JSON.parse($response.body);
         obj2.data.systemTimestamp=timestamp;
         obj2.data.canRetry=true;
-        let nNun = 0;
-        for (let scheduleInfoList in obj2.data.result.scheduleInfoList){
-            if (scheduleInfoList['status'] === 'NO_INVENTORY'){
+        for (let nNun in obj2.data.result.scheduleInfoList){
+            if (obj2.data.result.scheduleInfoList[nNun]['status'] === 'NO_INVENTORY'){
                 obj2.data.result.scheduleInfoList[nNun]['status']='HAS_END'
             }
-            if (scheduleInfoList['status'] === 'NOT_START'){
-                obj2.data.result.scheduleInfoList[nNun]['status']='HAS_END'
-                obj2.data.systemTimestamp=obj2.data.result.scheduleInfoList[nNun]['startTime'];
-                break;
+            if (obj2.data.result.scheduleInfoList[nNun]['status'] === 'NOT_START'){
+                if (obj2.data.result.scheduleInfoList[nNun]['startTime'] > Date.now()){
+                    obj2.data.systemTimestamp=obj2.data.result.scheduleInfoList[nNun]['startTime'];
+                    break;
+                }
             }
             nNun++;
         }
