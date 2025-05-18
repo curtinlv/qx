@@ -152,7 +152,7 @@ if ($.isNode() && process.env.gdPageId) {
 else{
     gdPageId = $.getval('gdPageId')
 }
-if (pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
+if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
     console.log("夏天来了")
     isXtll = true;
 }
