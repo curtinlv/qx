@@ -441,7 +441,8 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         $.message += `【成功抢券】：${JSON.stringify($.signget)}\n`;
                         pkc_flag = true;
                     }else{
-                        console.log(`【继续尝试】：${JSON.stringify($.signget)}\n`);
+                        console.log(`【继续尝试】：${JSON.stringify($.signget.data.coupon.toastMsg)}\n`);
+                        $.message += `【继续尝试】：${JSON.stringify$.signget.data.coupon.toastMsg)}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
