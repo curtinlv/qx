@@ -436,7 +436,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
                     $.signget = JSON.parse(data);
                     if ($.signget['data']['coupon']['status'] === 3 && $.signget['data']['coupon']['toastMsg'] && $.signget['data']['coupon'][toastMsg].indexOf("成功") >= 0){
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.data.coupon.toastMsg}\n`);
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget['data']['coupon']['toastMsg']}\n`);
                         $.message += `【成功抢券】：${$.signget['data']['coupon']['toastMsg']}\n`;
                         pkc_flag = true;
                     }else{
