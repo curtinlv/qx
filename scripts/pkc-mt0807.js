@@ -355,7 +355,7 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
                 try {
                     if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${data}`);
                     $.signget = JSON.parse(data);
-                    console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${JSON.stringify($.signget)}\n`);
+                    console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
                     // console.log(JSON.stringify($.signget));
                     // if ($.signget.code === 0 && $.signget.subcode === 0){
                     // }else{
