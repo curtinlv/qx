@@ -441,7 +441,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         pkc_flag = true;
                     }else{
                         console.log(`【继续尝试】：${JSON.stringify($.signget.data.coupon.toastMsg)}\n`);
-                        $.message += `【继续尝试】：${JSON.stringify$.signget.data.coupon.toastMsg)}\n`;
+                        $.message += `【继续尝试】：${JSON.stringify($.signget.data.coupon.toastMsg)}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
