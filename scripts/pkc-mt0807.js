@@ -171,7 +171,7 @@ function GetCookie() {
         pkc_mt_url = $request.url;
 
 
-        $.setdata("{}", "pkc_mt_headers");
+        // $.setdata("{}", "pkc_mt_headers");
         if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         // if (pkc_mt_method) $.setdata(pkc_mt_method, "pkc_mt_method");
@@ -195,10 +195,9 @@ function GetCookie() {
          mt_headers = JSON.stringify($request.headers);
          mt_Cookie = $request.headers.Cookie;
         pkc_mt_body = $request.body;
-        mt_body = JSON.parse($request.body);
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
-        $.setdata("{}", "pkc_mt_headers");
+        // $.setdata("{}", "pkc_mt_headers");
         if (mt_headers) $.setdata(mt_headers, "mt_headers");
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
