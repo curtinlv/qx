@@ -19,6 +19,11 @@ rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-bo
 58 59 9,11,13 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt-xtll.js, tag=美团抢卷-夏天来了, enabled=true
 */
 const $ = Env("美团抢卷-夏天来了");
+$.msg(
+    $.name,
+    '提示：⚠️脚本已废弃，请使用pkc-mt0807.js\n'
+);
+return;
 const pkc_qjnum = 60;  // 重放60次
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数

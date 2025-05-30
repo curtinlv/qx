@@ -21,7 +21,7 @@ let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，�
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 const pkc_qjnum = 50;  // 重放50次
-const timeoutMs = 10;  // 最多执行10秒即停止重放
+const timeoutMs = 5;  // 最多执行5秒即停止重放
 const timeoutMs2 = 3;  // 整点后，大于N秒即停止重放,如3秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
@@ -435,23 +435,13 @@ async function pkc_mtqj_xtll(timeout = 0) {
                 try {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
                     $.signget = JSON.parse(data);
-                    // console.log(JSON.stringify($.signget));
-                    if ($.signget.code === 0 && $.signget.subCode === 0){
-//                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.msg}\n`);
+                    if ($.signget.data.coupon.status === 3 && $.signget.data.coupon.toastMsg && $.signget.data.coupon.toastMsg.indexOf("成功") >= 0){
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.data.coupon.toastMsg}\n`);
                         $.message += `【成功抢券】：${JSON.stringify($.signget)}\n`;
                         pkc_flag = true;
-                    }else if ($.signget.code === 1 && $.signget.subCode ===  9017){
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${$.signget.msg}\n`);
-                        $.message += `【来晚了】：${JSON.stringify($.signget)}\n`;
-                       pkc_flag = true;
-                    }
-                    else if ($.signget.code === 1){
-                        console.log(`【继续尝试】：${JSON.stringify($.signget)}\n`);
                     }else{
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${$.signget.msg}\n`);
-                        $.message += `【抢券失败】：${JSON.stringify($.signget)}\n`;
-                        pkc_flag = true;
+                        console.log(`【继续尝试】：${JSON.stringify($.signget.data.coupon.toastMsg)}\n`);
+                        $.message += `【继续尝试】：${JSON.stringify$.signget.data.coupon.toastMsg)}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
