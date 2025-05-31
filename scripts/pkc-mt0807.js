@@ -392,14 +392,14 @@ async function pkc_mtqj(timeout = 0) {
                     // console.log(JSON.stringify($.signget));
                     if ($.signget.code === 0 && $.signget.subcode === 0){
 //                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${$.signget.msg}\n`);
-                        $.message += `【成功抢券】：${$.signget.msg}\n`;
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【成功抢券】：${JSON.stringify($.signget)}\n`);
+                        $.message += `【成功抢券】：${JSON.stringify($.signget)}\n`;
                         pkc_flag = true;
                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 2){
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${$.signget.msg}\n`);
-                        $.message += `【继续尝试】：${$.signget.msg}\n`;
-                       pkc_flag = true;
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${JSON.stringify($.signget)}\n`);
+                        $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
+                       // pkc_flag = true;
                     }
 //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
 //                         console.log(`【抢券失败】：${data}\n`);
@@ -407,12 +407,12 @@ async function pkc_mtqj(timeout = 0) {
 //                         pkc_flag = true;
 //                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 3){
-                        console.log(`【继续尝试】：${$.signget.msg}\n`);
+                        console.log(`【继续尝试】：${JSON.stringify($.signget)}\n`);
 //                         $.message += `【继续尝试】：${data}\n`;
                     }else{
-                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${$.signget.msg}\n`);
-                        $.message += `【抢券失败】：${$.signget.msg}\n`;
-                        pkc_flag = true;
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【抢券失败】：${JSON.stringify($.signget)}\n`);
+                        $.message += `【抢券失败】：${JSON.stringify($.signget)}\n`;
+                        // pkc_flag = true;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
