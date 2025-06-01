@@ -398,7 +398,7 @@ async function pkc_mtqj(timeout = 0) {
                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 2){
                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${JSON.stringify($.signget)}\n`);
-                        $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
+                        // $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
                        // pkc_flag = true;
                     }
 //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
@@ -445,7 +445,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         pkc_flag = true;
                     }else{
                         console.log(`【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`);
-                        $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
+                        // $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
