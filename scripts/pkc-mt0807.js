@@ -28,7 +28,7 @@ pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参�
 
 // $.idx = ($.idx = ($.getval('HuaHuiSuffix') || '1') - 1) > 0 ? ($.idx + 1 + '') : ''; // 账号扩展字符
 const notify = $.isNode() ? require("./sendNotify") : ``;
-const logs = 0; // 0为关闭日志，1为开启
+const logs = 1; // 0为关闭日志，1为开启
 const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
@@ -402,7 +402,7 @@ async function pkc_mtqj(timeout = 0) {
                     }
                     else if ($.signget.code === 1 && $.signget.subcode === 2){
                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【继续尝试】：${JSON.stringify($.signget)}\n`);
-                        $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
+                        // $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
                        // pkc_flag = true;
                     }
 //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
@@ -449,7 +449,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         pkc_flag = true;
                     }else{
                         console.log(`【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`);
-                        $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
+                        // $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
                     }
                 } catch (e) {
                     $.logErr(e, resp);
@@ -467,7 +467,11 @@ function msgShow() {
             console.log($.name + '\n' + $.message);
         }
         if (notifyInterval == 1) {
-            $.msg($.name, ``, $.message);
+            if ($.message.indexOf("成功抢券") >= 0){
+                $.msg($.name, ``, $.message);
+            }else{
+                $.msg($.name, `很遗憾！`, `没抢到，下次继续吧~`);
+            }
         }
 
 
