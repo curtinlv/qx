@@ -10,6 +10,11 @@ promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url scr
 
 */
 const $ = Env("美团触发时间、获取保存couponReferIds");
+$.msg(
+    $.name,
+    '提示：⚠️脚本已废弃，请使用pkc-mt0807.js\n'
+);
+return;
 // 这里修改来抢的时间，再开启本重写。
 const timeStr = '17:29:58';
 

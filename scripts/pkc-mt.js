@@ -19,6 +19,11 @@ promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url scr
 58 59 14 * * * https://raw.githubusercontent.com/curtinlv/qx/main/scripts/pkc-mt.js, tag=美团抢卷, enabled=true
 */
 const $ = Env("美团抢卷");
+$.msg(
+    $.name,
+    '提示：⚠️脚本已废弃，请使用pkc-mt0807.js\n'
+);
+return;
 let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
