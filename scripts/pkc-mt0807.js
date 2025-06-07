@@ -259,7 +259,9 @@ if (isGetCookie) {
         })
 }
 
-
+function pkcSleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 async function all() {
     if (!pkc_mt_url) {
         $.msg(
@@ -274,17 +276,21 @@ async function all() {
         }else{
             await pkc_mtqj_sx() //
         }
+        const startTime = Date.now();
         if (pkc_qjnum > 1){
             while (true){
                 if (isMinuteZero()){
                     break;
                 }else{
+                    await pkcSleep(10);
                     console.log(`未到时间，等待...`);
+                }
+                if (Date.now() - startTime > (timeoutMs * 1000)){
+                    break;
                 }
             }
         }
 
-        const startTime = Date.now();
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             // if (i === 0){
