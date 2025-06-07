@@ -274,13 +274,16 @@ async function all() {
         }else{
             await pkc_mtqj_sx() //
         }
-        while (true){
-            if (isMinuteZero()){
-                break;
-            }else{
-                console.log(`未到时间，等待...`);
+        if (pkc_qjnum > 1){
+            while (true){
+                if (isMinuteZero()){
+                    break;
+                }else{
+                    console.log(`未到时间，等待...`);
+                }
             }
         }
+
         const startTime = Date.now();
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
