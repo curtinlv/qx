@@ -269,18 +269,30 @@ async function all() {
         return;
     }
     if(pkc_select === 1){
+        if (isXtll){
+            await pkc_mtqj_rights_sx()
+        }else{
+            await pkc_mtqj_sx() //
+        }
+        while (true){
+            if (isMinuteZero()){
+                break;
+            }else{
+                console.log(`未到时间，等待...`);
+            }
+        }
         const startTime = Date.now();
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
-            if (i === 0){
-                await pkc_mtqj_rights_sx()
-            }
+            // if (i === 0){
+            //     await pkc_mtqj_rights_sx()
+            // }
             if (isXtll){
                 await pkc_mtqj_xtll() //
             }else{
-                if (i === 0){
-                    await pkc_mtqj_sx() //
-                }
+                // if (i === 0){
+                //     await pkc_mtqj_sx() //
+                // }
                 await pkc_mtqj() //
             }
             if (pkc_flag || isOutTime(0, timeoutMs2)){
@@ -500,7 +512,12 @@ function msgShow() {
         resolve()
     })
 }
-
+// 判断是否为分钟是否为0
+function isMinuteZero() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    return minutes === 0;
+}
 function isOutTime(m, s) {
     const now = new Date();
     const minutes = now.getMinutes(); // 获取当前分钟（0-59）
