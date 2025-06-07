@@ -278,12 +278,16 @@ async function all() {
         }
         const startTime = Date.now();
         if (pkc_qjnum > 1){
+            let sss = 0;
             while (true){
+                sss++;
                 if (isMinuteZero()){
                     break;
                 }else{
-                    await pkcSleep(10);
-                    console.log(`未到时间，等待...`);
+                    await pkcSleep(100);
+                    if (sss === 1){
+                       console.log(`未到时间，等待...`);
+                    }
                 }
                 if (Date.now() - startTime > (timeoutMs * 1000)){
                     break;
