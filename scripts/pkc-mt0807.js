@@ -460,6 +460,9 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         }else if ($.signget['data']['coupon']['toastMsg'].indexOf("抢完了") >= 0){
                             $.message += `【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
+                        }else if ($.signget['data']['subCode'] === 9020){
+                            $.message += `【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
+                            pkc_flag = true;
                         }else{
                             console.log(`【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`);
                             // $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
