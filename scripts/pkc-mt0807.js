@@ -284,7 +284,7 @@ async function all() {
                 if (isMinuteZero()){
                     break;
                 }else{
-                    await pkcSleep(100);
+                    await pkcSleep(10);
                     if (sss === 1){
                        console.log(`未到时间，等待...`);
                     }
