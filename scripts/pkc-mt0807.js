@@ -281,7 +281,7 @@ async function all() {
             let sss = 0;
             while (true){
                 sss++;
-                if (isMinuteZero()){
+                if (await isMinuteZero()){
                     break;
                 }else{
                     await pkcSleep(10);
@@ -526,7 +526,7 @@ function msgShow() {
     })
 }
 // 判断是否为分钟是否为0
-function isMinuteZero() {
+async function isMinuteZero() {
     const now = new Date();
     const minutes = now.getMinutes();
     return minutes === 0;
