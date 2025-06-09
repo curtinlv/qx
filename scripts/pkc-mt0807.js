@@ -21,7 +21,7 @@ let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，�
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 const pkc_qjnum = 50;  // 重放50次
-const timeoutMs = 4;  // 最多执行5秒即停止重放
+const timeoutMs = 6;  // 最多执行5秒即停止重放
 const timeoutMs2 = 2;  // 整点后，大于N秒即停止重放,如3秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
