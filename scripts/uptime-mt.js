@@ -92,9 +92,9 @@ if (url.indexOf(pathTime1) != -1) {
 if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
-        if (obj2.data.nextGrabCouponInfo){
-            obj2.data.currentGrabCouponInfo=obj2.data.nextGrabCouponInfo;
-        }
+        // if (obj2.data.nextGrabCouponInfo){
+        //     obj2.data.currentGrabCouponInfo=obj2.data.nextGrabCouponInfo;
+        // }
         obj2.data.currentTime=timestamp/1000;
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
