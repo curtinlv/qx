@@ -308,7 +308,7 @@ async function all() {
                 // }
                 await pkc_mtqj() //
             }
-            if (pkc_flag || isOutTime(0, timeoutMs2)){
+            if (pkc_flag || isOutTime(0, timeoutMs2) || isOutTime(30, timeoutMs2)){
                 break;
             }
             if (Date.now() - startTime > (timeoutMs * 1000)){
