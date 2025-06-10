@@ -529,7 +529,7 @@ function msgShow() {
 async function isMinuteZero() {
     const now = new Date();
     const minutes = now.getMinutes();
-    return minutes === 0;
+    return minutes % 30 === 0;
 }
 function isOutTime(m, s) {
     const now = new Date();
