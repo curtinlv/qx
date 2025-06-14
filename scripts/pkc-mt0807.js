@@ -512,9 +512,9 @@ function msgShow() {
         if (notifyInterval == 1) {
             if ($.message.indexOf("成功抢券") >= 0){
                 // $.msg($.name, ``, $.message);
-                $.msg($.name, `【抢券成功】拿下`, ``);
+                $.msg($.name, `拿下`, ``);
             }else{
-                $.msg($.name, `【抢券失败】没拿下`, ``);
+                $.msg($.name, `没拿下`, ``);
             }
         }
 
