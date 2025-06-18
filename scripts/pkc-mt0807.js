@@ -23,6 +23,7 @@ let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，�
 const pkc_qjnum = 50;  // 重放50次
 const timeoutMs = 6;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
+const sleepNum = 100;  // 休眠时间，单位毫秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -300,9 +301,10 @@ async function all() {
             pkc_flag = false;
             if (isXtll){
                 pkc_mtqj_xtll() //
-                await pkcSleep(100);
+                await pkcSleep(sleepNum);
             }else{
-                await pkc_mtqj() //
+                pkc_mtqj() //
+                await pkcSleep(sleepNum);
             }
             if (pkc_flag || isOutTime(0, timeoutMs2) || isOutTime(30, timeoutMs2)){
                 break;
