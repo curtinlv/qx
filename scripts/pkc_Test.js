@@ -21,8 +21,9 @@ let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，�
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 const pkc_qjnum = 50;  // 重放50次
-const timeoutMs = 6;  // 最多执行5秒即停止重放
+const timeoutMs = 10;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
+const sleepNum = 100;  // 休眠时间，单位毫秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -159,7 +160,7 @@ if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
 
 function GetCookie() {
     if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/fetchcoupon") >= 0)) {
-         mt_headers = JSON.stringify($request.headers);
+        mt_headers = JSON.stringify($request.headers);
 
         mtgsig = $request.headers.mtgsig;
         mt_Cookie = $request.headers.Cookie;
@@ -192,8 +193,8 @@ function GetCookie() {
         $done();
     }
     if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
-         mt_headers = JSON.stringify($request.headers);
-         mt_Cookie = $request.headers.Cookie;
+        mt_headers = JSON.stringify($request.headers);
+        mt_Cookie = $request.headers.Cookie;
         pkc_mt_body = $request.body;
         pkc_mt_method = $request.method;
         pkc_mt_url = $request.url;
@@ -271,12 +272,11 @@ async function all() {
         return;
     }
     if(pkc_select === 1){
-        // if (isXtll){
-        // }
-        await pkc_mtqj_rights_sx()
-        // else{
-        //     await pkc_mtqj_sx() //
-        // }
+        if (isXtll){
+            await pkc_mtqj_rights_sx()
+        }else{
+            await pkc_mtqj_sx() //
+        }
         const startTime = Date.now();
         if (pkc_qjnum > 1){
             let sss = 0;
@@ -287,7 +287,7 @@ async function all() {
                 }else{
                     await pkcSleep(10);
                     if (sss === 1){
-                       console.log(`未到时间，等待...`);
+                        console.log(`未到时间，等待...`);
                     }
                 }
                 if (Date.now() - startTime > (timeoutMs * 1000)){
@@ -299,10 +299,11 @@ async function all() {
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             if (isXtll){
-                pkc_mtqj_xtll() //
-                await pkcSleep(100);
+                 pkc_mtqj_xtll() //
+                await pkcSleep(sleepNum);
             }else{
-                await pkc_mtqj() //
+                pkc_mtqj() //
+                await pkcSleep(sleepNum);
             }
             if (pkc_flag || isOutTime(0, timeoutMs2) || isOutTime(30, timeoutMs2)){
                 break;
@@ -312,68 +313,23 @@ async function all() {
             }
         }
     }else{
-        // $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
-        // $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
-        // $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
-        // $.msg($.name, `美团抢券-当前请求pkc_mt_url`, `${pkc_mt_url}`);
-        // $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
-        // $.msg($.name, `美团抢券-当前请求pkc_mt_body`, `${pkc_mt_body}`);
-        console.log(`美团抢券-当前mt_headers=${mt_headers}`);
-        console.log(`美团抢券-当前请求pkc_mt_url=${pkc_mt_url}`);
-        console.log(`美团抢券-当前请求pkc_mt_body=${pkc_mt_body}`);
+        $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
+        $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
+        $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
 
-        console.log(`美团抢券-当前mt_headers_sx=${mt_headers_sx}`);
-        console.log(`美团抢券-当前pkc_mt_url_sx=${pkc_mt_url_sx}`);
-        console.log(`美团抢券-当前pkc_mt_body_sx=${pkc_mt_body_sx}`);
+        $.msg($.name, `美团抢券-当前请求pkc_mt_url`, `${pkc_mt_url}`);
+        $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
+        $.msg($.name, `美团抢券-当前请求pkc_mt_body`, `${pkc_mt_body}`);
 
     }
 
 }
 
 
-//美团抢券sx
-// async function pkc_mtqj_sx(timeout = 0) {
-//     return new Promise((resolve) => {
-//         setTimeout(() => {
-//             let url = {
-//                 url: `https://promotion.waimai.meituan.com/lottery/limitcouponcomponent/info?couponReferIds=${couponReferIds}`,
-//                 headers: {
-//                     'Host': 'promotion.waimai.meituan.com',
-//                     'Origin': 'https://market.waimai.meituan.com',
-//                     'Connection': 'keep-alive',
-//                     'Accept': 'application/json, text/plain, */*',
-//                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.32(0x18002038) NetType/4G Language/zh_CN',
-//                     'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
-//                     'Referer': 'https://market.waimai.meituan.com/',
-//                     'Cookie': mt_Cookie,
-//                 },
-//                 body: ``,
-//             };
-//
-//             // console.log(JSON.stringify(url));
-//             $.get(url, async (err, resp, data) => {
-//                 try {
-//                     if (logs) $.log(`开始抢券刷新ID🚩: ${data}`);
-//                     $.signget = JSON.parse(data);
-//                     // console.log(JSON.stringify($.signget));
-//                     if ($.signget.code === 0 && $.signget.subcode === 0){
-//                          console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
-//                     }else{
-//                         console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：失败\n`);
-//                     }
-// //
-//                 } catch (e) {
-//                     $.logErr(e, resp);
-//                 } finally {
-//                     resolve()
-//                 }
-//             })
-//         }, timeout)
-//     })
-// }
-
 //美团抢券sx rights
 async function pkc_mtqj_rights_sx(timeout = 0) {
+    // console.log('刷新');
+    // return 0;
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
@@ -382,11 +338,13 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
             };
 
             // console.log(JSON.stringify(url));
-            $.get(url, async (err, resp, data) => {
+            $.get(url,  (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${data}`);
+                    // if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${resp}`);
+                    // if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${err}`);
                     $.signget = JSON.parse(data);
-                    console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
+                    console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget}\n`);
                     if ($.signget.msg.indexOf("未登录") >= 0){
                         $.done();
                     }
@@ -464,6 +422,8 @@ async function pkc_mtqj(timeout = 0) {
 
 //美团抢券-夏天来了
 async function pkc_mtqj_xtll(timeout = 0) {
+    // console.log('抢券');
+    // return 0;
     return new Promise((resolve) => {
         setTimeout(() => {
             let url = {
@@ -511,7 +471,7 @@ function msgShow() {
         if (notifyInterval != 1) {
             console.log($.name + '\n' + $.message);
         }
-        if (notifyInterval == 1 && pkc_select === 1) {
+        if (notifyInterval == 1) {
             if ($.message.indexOf("成功抢券") >= 0){
                 // $.msg($.name, ``, $.message);
                 $.msg($.name, `拿下`, ``);
