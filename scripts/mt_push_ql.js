@@ -6,7 +6,6 @@
 0 0 1 1 * mt_push_ql.js, tag=美团CK上传青龙, enabled=false
 
 */
-
 // 填写青龙地址 （必填）
 const qlUrl = "";
 // 填写青龙应用密钥
@@ -100,7 +99,10 @@ if (true) {
 async function GetRewrite() {
     if (qlUrl.length > 0 && clientSecret.length > 0 && clientId.length >0){
 		userId = await getUserId(mt_Cookie);
-		console.log(`用户ID:${userId}`);
+		if (userId.length > 20){
+			userId = "美团用户";
+		}
+		// console.log(`用户ID:${userId}`);
         await getQlToekn();
         await getAllEnvs();
         // console.log($.envsList)
@@ -216,13 +218,13 @@ async function getAllEnvs(timeout = 0) {
 // 获取所有变量
 async function getQlToekn(timeout = 0) {
     return new Promise((resolve) => {
-        setTimeout(() => {
+        setTimeout(()	 => {
             let url = {
                 url: qlUrl + `/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
                 headers: {"Content-Type": "application/json;charset=UTF-8"}
             };
             $.get(url, (err, resp, data) => {
-                try {
+				try {
                     if (err) {
                         console.log(`${JSON.stringify(err)}`)
                         console.log(`${$.name} API请求失败，请检查网路重试`)
@@ -259,7 +261,7 @@ async function addEnv(envData) {
                     if (JSON.parse(data).code === 200) {
                         $.msg('美团ck上传青龙成功', `用户Id: ${userId}`, '');
                     }else{
-                        $.msg('美团ck上传青龙失败', `用户${data}`, '');
+                        $.msg('美团ck上传青龙失败', `${data}`, '');
                     }
                 }
             } catch (e) {
@@ -320,7 +322,6 @@ async function deleteEnv(list) {
                 try {
                     if (err) {
                         console.log(`${JSON.stringify(err)}`)
-                        console.log(`${$.name} API请求失败，请检查网路重试`)
                         console.log(`删除美团旧ck-失败`);
 						$.done();
                     }else{
@@ -635,7 +636,7 @@ function Env(t, e) {
 					url: s,
 					...i
 				} = t;
-				this.got.post(s, i).then(t => {
+				this.got.delete(s, i).then(t => {
 					const {
 						statusCode: s,
 						statusCode: i,
