@@ -134,13 +134,6 @@ else{
     mt_Cookie = $.getval('mt_Cookie')
 }
 
-if ($.isNode() && process.env.mt_Cookie) {
-    mt_Cookie = process.env.mt_Cookie
-}
-else{
-    mt_Cookie = $.getval('mt_Cookie')
-}
-
 if ($.isNode() && process.env.couponReferIds) {
     couponReferIds = process.env.couponReferIds
 }
