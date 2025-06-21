@@ -6,15 +6,25 @@
 0 0 1 1 * mt_push_ql.js, tag=美团CK上传青龙, enabled=false
 
 */
+const $ = new Env("推送美团ck至青龙");
+
 // 填写青龙地址 （必填）
-const qlUrl = "";
+let qlUrl = "";
 // 填写青龙应用密钥
-const clientSecret = "";
+let clientSecret = "";
 // 填写青龙应用id
-const clientId = "";
+let clientId = "";
 
 // ######################################
-const $ = new Env("推送美团ck至青龙");
+if ($.isNode() && process.env.qlUrl) {
+    qlUrl = process.env.qlUrl
+}
+if ($.isNode() && process.env.clientSecret) {
+    clientSecret = process.env.clientSecret
+}
+if ($.isNode() && process.env.clientId) {
+    clientId = process.env.clientId
+}
 let mt_Cookie =  ``;
 let mt_headers =  ``;
 let pkc_mt_url = ``;
@@ -130,13 +140,15 @@ async function GetRewrite() {
             // 删除旧变量
             await deleteEnv(oldEnvId);
         }
-        addData.push({ name: 'pkc_mt_url', value: pkc_mt_url, remarks: `用户ID:${userId}`});
-        addData.push({ name: 'pkc_mt_body', value: pkc_mt_body, remarks: `用户ID:${userId}`});
-        addData.push({ name: 'mt_headers', value: mt_headers, remarks: `用户ID:${userId}`});
-        addData.push({ name: 'pkc_mt_url_sx', value: pkc_mt_url_sx, remarks: `用户ID:${userId}`});
-        addData.push({ name: 'pkc_mt_body_sx', value: pkc_mt_body_sx, remarks: `用户ID:${userId}`});
-        addData.push({ name: 'mt_headers_sx', value: mt_headers_sx, remarks: `用户ID:${userId}`});
-        await addEnv(addData);
+        if (pkc_mt_url) addData.push({ name: 'pkc_mt_url', value: pkc_mt_url, remarks: `用户ID:${userId}`});
+        if (pkc_mt_body) addData.push({ name: 'pkc_mt_body', value: pkc_mt_body, remarks: `用户ID:${userId}`});
+        if (mt_headers) addData.push({ name: 'mt_headers', value: mt_headers, remarks: `用户ID:${userId}`});
+        if (pkc_mt_url_sx) addData.push({ name: 'pkc_mt_url_sx', value: pkc_mt_url_sx, remarks: `用户ID:${userId}`});
+        if (pkc_mt_body_sx) addData.push({ name: 'pkc_mt_body_sx', value: pkc_mt_body_sx, remarks: `用户ID:${userId}`});
+        if (mt_headers_sx) addData.push({ name: 'mt_headers_sx', value: mt_headers_sx, remarks: `用户ID:${userId}`});
+		if (addData.length > 0){
+        	await addEnv(addData);
+		}
         $.done();
 
     }else{
