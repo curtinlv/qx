@@ -23,7 +23,7 @@ let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，�
 const pkc_qjnum = 50;  // 重放50次
 const timeoutMs = 6;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
-const sleepNum = 100;  // 休眠时间，单位毫秒
+const sleepNum = 10;  // 休眠时间，单位毫秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -392,11 +392,16 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
             $.get(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券刷新ID(rights)🚩: ${data}`);
-                    $.signget = JSON.parse(data);
-                    console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
-                    if ($.signget.msg.indexOf("未登录") >= 0){
-                        $.done();
+                    if (resp.statusCode === 200){
+                        $.signget = JSON.parse(data);
+                        console.log(`[${new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 }).replace(',', '').replace(/\//g, '-')}]【刷新】：${$.signget.msg}\n`);
+                        if ($.signget.msg.indexOf("未登录") >= 0){
+                            $.done();
+                        }
+                    }else{
+                        $.log(`刷新失败：${data}`);
                     }
+
                     // console.log(JSON.stringify($.signget));
                     // if ($.signget.code === 0 && $.signget.subcode === 0){
                     // }else{
