@@ -518,20 +518,17 @@ function msgShow() {
         if (notifyInterval != 1) {
             console.log($.name + '\n' + $.message);
         }
-        if (notifyInterval == 1 && pkc_select === 1) {
-            if ($.message.indexOf("成功抢券") >= 0){
-                // $.msg($.name, ``, $.message);
-                $.msg($.name, `拿下`, ``);
-            }else{
-                $.msg($.name, `没拿下`, ``);
+        let resultStr = `没拿下`;
+         if ($.message.indexOf("成功抢券") >= 0){
+                resultStr = `拿下`;
             }
+        if (notifyInterval == 1 && pkc_select === 1) {
+            $.msg($.name, `${resultStr}`, ``);
         }
-
 
         if (notifyttt == 1 && $.isNode()){
-            await notify.sendNotify($.name, $.message);
+            await notify.sendNotify($.name, `${resultStr}`);
         }
-
         resolve()
     })
 }
