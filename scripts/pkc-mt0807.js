@@ -172,7 +172,7 @@ function GetCookie() {
         $.log(
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
-        let userId = getUserId(mt_Cookie);
+        let userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
         $done();
     }
@@ -187,7 +187,7 @@ function GetCookie() {
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
-        let userId = getUserId(mt_Cookie);
+        let userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
         $done();
     }
