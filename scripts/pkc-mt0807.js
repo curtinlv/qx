@@ -310,7 +310,7 @@ async function all() {
 
 }
 
-async function getUserId(cookieString) {
+function getUserId(cookieString) {
     // 步骤1：将字符串按分号拆分成键值对数组
     const pairs = cookieString.split(';');
 
