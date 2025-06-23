@@ -23,7 +23,7 @@ let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，�
 const pkc_qjnum = 50;  // 重放50次
 const timeoutMs = 6;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
-const sleepNum = 10;  // 休眠时间，单位毫秒
+const sleepNum = 100;  // 休眠时间，单位毫秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
 pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参数
 
@@ -431,7 +431,7 @@ async function pkc_mtqj(timeout = 0) {
             $.post(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
-                    if (data.indexOf("403 Forbidden") >= 0){
+                    if (typeof data == "string" && data.indexOf("403 Forbidden") >= 0){
                         console.log(`403 暂停抢券`);
                         pkc_flag = true;
                     }else{
