@@ -487,23 +487,23 @@ async function pkc_mtqj_xtll(timeout = 0) {
             $.post(url, async (err, resp, data) => {
                 try {
                     if (logs) $.log(`开始抢券🚩: ${data}`);
-                    if (data.indexOf("403 Forbidden") >= 0){
+                    if (typeof data == "string" && data.indexOf("403 Forbidden") >= 0){
                         console.log(`[${$.time("MM-dd HH:mm:ss.S")}]403 暂停抢券`);
                         pkc_flag = true;
                     }else{
                         $.signget = JSON.parse(data);
-                        if ($.signget['data']['coupon']['status'] === 3 && $.signget['data']['coupon']['toastMsg'] && $.signget['data']['coupon']['toastMsg'].indexOf("成功") >= 0){
+                        if ($.signget['data'] && $.signget['data']['coupon']['status'] === 3 && $.signget['data']['coupon']['toastMsg'] && $.signget['data']['coupon']['toastMsg'].indexOf("成功") >= 0){
                             console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${$.signget['data']['coupon']['toastMsg']}\n`);
                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
-                        }else if ($.signget['data']['coupon']['toastMsg'].indexOf("抢完了") >= 0){
+                        }else if ($.signget['data'] && $.signget['data']['coupon']['toastMsg'].indexOf("抢完了") >= 0){
                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
-                        }else if ($.signget['data']['subCode'] === 9020){
+                        }else if ($.signget['data'] && $.signget['data']['subCode'] === 9020){
                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
                         }else{
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`);
+                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${$.signget['data'] ? $.signget['data']['coupon']['toastMsg']:data}\n`);
                             // $.message += `【继续尝试】：${$.signget['data']['coupon']['toastMsg']}\n`;
                         }
                     }
