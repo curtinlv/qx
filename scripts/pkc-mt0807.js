@@ -227,6 +227,7 @@ if (isGetCookie) {
 
     !(async () => {
         await all();
+        await pkcSleep(3);
         await msgShow();
 
     })()
