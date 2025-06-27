@@ -90,7 +90,7 @@ else{
 
 let userId = ``;
 
- if (mt_Cookie && mt_Cookie.length > 0 && mt_headers.length > 0 && pkc_mt_url.length > 0 && pkc_mt_body.length > 0){
+ if (mt_headers && mt_headers.length > 0 && pkc_mt_url.length > 0 && pkc_mt_body.length > 0){
 
  }else{
     $.msg($.name,'请先抓取CK再执行上传','');
@@ -103,16 +103,16 @@ let userIDValue='';
 let addData = [];
 // let isGetCookie = typeof $request !== 'undefined'
 if (true) {
-    GetRewrite();
+	GetRewrite();
 }
 
 async function GetRewrite() {
     if (qlUrl.length > 0 && clientSecret.length > 0 && clientId.length >0){
-		userId = await getUserId(mt_Cookie);
-		if (userId.length > 20){
-			userId = "美团用户";
+		await pkc_getUserName();
+		if (!userId){
+			userId = await getUserId(mt_Cookie);
 		}
-		// console.log(`用户ID:${userId}`);
+		// console.log(`美团ID:${userId}`);
         await getQlToekn();
         await getAllEnvs();
         // console.log($.envsList)
@@ -140,12 +140,12 @@ async function GetRewrite() {
             // 删除旧变量
             await deleteEnv(oldEnvId);
         }
-        if (pkc_mt_url) addData.push({ name: 'pkc_mt_url', value: pkc_mt_url, remarks: `用户ID:${userId}`});
-        if (pkc_mt_body) addData.push({ name: 'pkc_mt_body', value: pkc_mt_body, remarks: `用户ID:${userId}`});
-        if (mt_headers) addData.push({ name: 'mt_headers', value: mt_headers, remarks: `用户ID:${userId}`});
-        if (pkc_mt_url_sx) addData.push({ name: 'pkc_mt_url_sx', value: pkc_mt_url_sx, remarks: `用户ID:${userId}`});
-        if (pkc_mt_body_sx) addData.push({ name: 'pkc_mt_body_sx', value: pkc_mt_body_sx, remarks: `用户ID:${userId}`});
-        if (mt_headers_sx) addData.push({ name: 'mt_headers_sx', value: mt_headers_sx, remarks: `用户ID:${userId}`});
+        if (pkc_mt_url) addData.push({ name: 'pkc_mt_url', value: pkc_mt_url, remarks: `美团ID:${userId}`});
+        if (pkc_mt_body) addData.push({ name: 'pkc_mt_body', value: pkc_mt_body, remarks: `美团ID:${userId}`});
+        if (mt_headers) addData.push({ name: 'mt_headers', value: mt_headers, remarks: `美团ID:${userId}`});
+        if (pkc_mt_url_sx) addData.push({ name: 'pkc_mt_url_sx', value: pkc_mt_url_sx, remarks: `美团ID:${userId}`});
+        if (pkc_mt_body_sx) addData.push({ name: 'pkc_mt_body_sx', value: pkc_mt_body_sx, remarks: `美团ID:${userId}`});
+        if (mt_headers_sx) addData.push({ name: 'mt_headers_sx', value: mt_headers_sx, remarks: `美团ID:${userId}`});
 		if (addData.length > 0){
         	await addEnv(addData);
 		}
@@ -156,7 +156,51 @@ async function GetRewrite() {
         $.done();
     }
 }
+async function pkc_getUserName(timeout = 0) {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			let orig_hd = $.toObj(mt_headers, `header转换失败`);
+			let tk =  getUserToekn(orig_hd['Cookie']);
+			let url = {
+				url: `https://open.meituan.com/user/v1/info/auditting?fields=auditUsername&joinKey=&channelEnc=`,
+				headers : {
+					'Origin' : `https://mtaccount.meituan.com`,
+					'Accept-Encoding' : `gzip, deflate, br`,
+					'Connection' : `keep-alive`,
+					'X-Titans-User' : ``,
+					'Accept' : `*/*`,
+					'Host' : `open.meituan.com`,
+					'User-Agent' : orig_hd['User-Agent'],
+					'Referer' : `https://mtaccount.meituan.com/`,
+					'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+					'token' : tk
+				}
+			};
+			// console.log(JSON.stringify(url));
+			$.get(url, async (err, resp, data) => {
+				try {
+					// if (logs) $.log(`获取用户昵称(rights)🚩: ${data}`);
+					if (resp && resp.statusCode === 200){
+						try {
+							$.signget = JSON.parse(data);
+							console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【当前用户】：${$.signget['user']['username']}(${$.signget['user']['id']})\n`);
+							userId = `${$.signget['user']['username']}(${$.signget['user']['id']})`;
+						}catch (e) {
+							$.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败2：${data}`);
+						}
+					}else{
+						$.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败：${data}`);
+					}
 
+				} catch (e) {
+					$.logErr(e, resp);
+				} finally {
+					resolve()
+				}
+			})
+		}, timeout)
+	})
+}
 async function getUserId(cookieString) {
     // 步骤1：将字符串按分号拆分成键值对数组
     const pairs = cookieString.split(';');
@@ -183,6 +227,32 @@ async function getUserId(cookieString) {
 
     // 未找到时返回空值
     return null;
+}
+function getUserToekn(cookieString) {
+	// 步骤1：将字符串按分号拆分成键值对数组
+	const pairs = cookieString.split(';');
+
+	// 步骤2：遍历每个键值对
+	for (const pair of pairs) {
+		// 步骤3：分割键和值，并清除首尾空格
+		const [key, value] = pair.trim().split('=');
+
+		// 步骤4：匹配目标键名
+		if (key === 'token' && value) {
+			return value;
+		}
+	}
+	for (const pair of pairs) {
+		// 步骤3：分割键和值，并清除首尾空格
+		const [key, value] = pair.trim().split('=');
+
+		// 步骤4：匹配目标键名
+		if (key === 'dper' && value) {
+			return value;
+		}
+	}
+	// 未找到时返回空值
+	return null;
 }
 
 function decodeUnicode(str) {
@@ -271,7 +341,7 @@ async function addEnv(envData) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     if (JSON.parse(data).code === 200) {
-                        $.msg('美团ck上传青龙成功', `用户Id: ${userId}`, '');
+                        $.msg('美团ck上传青龙成功', `美团ID: ${userId}`, '');
                     }else{
                         $.msg('美团ck上传青龙失败', `${data}`, '');
                     }

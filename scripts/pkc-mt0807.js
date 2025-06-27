@@ -256,6 +256,10 @@ async function all() {
         );
         return;
     }
+    pkc_getUserName();
+    if (!userId){
+        userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+    }
     if(pkc_select === 1){
         // if (isXtll){
         // }
@@ -452,7 +456,7 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     })
 }
 
-async function pkc_getUserName(timeout = 0) {
+function pkc_getUserName(timeout = 0) {
     return new Promise((resolve) => {
         setTimeout(() => {
             let orig_hd = JSON.parse(mt_headers);
@@ -607,11 +611,11 @@ function msgShow() {
                 resultStr = `拿下`;
             }
         if (notifyInterval == 1 && pkc_select === 1) {
-            $.msg($.name, `${resultStr}`, ``);
+            $.msg(`【${$.name}】${userId}`, `${resultStr}`, ``);
         }
 
         if (notifyttt == 1 && $.isNode()){
-            await notify.sendNotify($.name, `${resultStr}`);
+            await notify.sendNotify(`【${$.name}】${userId}`, `${resultStr}`);
         }
         resolve()
     })
