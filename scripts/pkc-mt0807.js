@@ -34,7 +34,7 @@ const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
 let isXtll = false;
-
+let userId = ``;
 let mtgsig  = ``;
 let mtFingerprint = ``;
 let mt_Cookie = ``;
@@ -172,7 +172,10 @@ function GetCookie() {
         $.log(
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
-        let userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+        pkc_getUserName();
+        if (!userId){
+            userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+        }
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
         $done();
     }
@@ -187,7 +190,10 @@ function GetCookie() {
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
-        let userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+        pkc_getUserName();
+        if (!userId){
+            userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+        }
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
         $done();
     }
@@ -338,6 +344,33 @@ function getUserId(cookieString) {
     // 未找到时返回空值
     return null;
 }
+function getUserToekn(cookieString) {
+    // 步骤1：将字符串按分号拆分成键值对数组
+    const pairs = cookieString.split(';');
+
+    // 步骤2：遍历每个键值对
+    for (const pair of pairs) {
+        // 步骤3：分割键和值，并清除首尾空格
+        const [key, value] = pair.trim().split('=');
+
+        // 步骤4：匹配目标键名
+        if (key === 'token' && value) {
+            return value;
+        }
+    }
+    // 步骤2：遍历每个键值对
+    for (const pair of pairs) {
+        // 步骤3：分割键和值，并清除首尾空格
+        const [key, value] = pair.trim().split('=');
+
+        // 步骤4：匹配目标键名
+        if (key === 'dper' && value) {
+            return value;
+        }
+    }
+    // 未找到时返回空值
+    return null;
+}
 
 //美团抢券sx
 // async function pkc_mtqj_sx(timeout = 0) {
@@ -419,6 +452,51 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     })
 }
 
+async function pkc_getUserName(timeout = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let orig_hd = JSON.parse(mt_headers);
+            let tk =  getUserToekn(orig_hd['Cookie']);
+            let url = {
+                url: `https://open.meituan.com/user/v1/info/auditting?fields=auditUsername&joinKey=&channelEnc=`,
+                headers : {
+                    'Origin' : `https://mtaccount.meituan.com`,
+                    'Accept-Encoding' : `gzip, deflate, br`,
+                    'Connection' : `keep-alive`,
+                    'X-Titans-User' : ``,
+                    'Accept' : `*/*`,
+                    'Host' : `open.meituan.com`,
+                    'User-Agent' : orig_hd['User-Agent'],
+                    'Referer' : `https://mtaccount.meituan.com/`,
+                    'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+                    'token' : tk
+                }
+            };
+            // console.log(JSON.stringify(url));
+            $.get(url, async (err, resp, data) => {
+                try {
+                    if (logs) $.log(`获取用户昵称(rights)🚩: ${data}`);
+                    if (resp && resp.statusCode === 200){
+                        try {
+                            $.signget = JSON.parse(data);
+                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【当前用户】：${$.signget['user']['username']}(${$.signget['user']['id']})\n`);
+                            userId = `${$.signget['user']['username']}(${$.signget['user']['id']})`;
+                        }catch (e) {
+                            $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败2：${data}`);
+                        }
+                    }else{
+                        $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败：${data}`);
+                    }
+
+                } catch (e) {
+                    $.logErr(e, resp);
+                } finally {
+                    resolve()
+                }
+            })
+        }, timeout)
+    })
+}
 //美团抢券
 async function pkc_mtqj(timeout = 0) {
     return new Promise((resolve) => {
