@@ -21,7 +21,7 @@ let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，�
 let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
 
 const pkc_qjnum = 50;  // 重放50次
-const timeoutMs = 6;  // 最多执行5秒即停止重放
+const timeoutMs = 10;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
 const sleepNum = 100;  // 休眠时间，单位毫秒
 // 如果想查看当前是否已经抓取Body ， 把下面改2;
