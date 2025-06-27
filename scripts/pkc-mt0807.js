@@ -456,49 +456,47 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     })
 }
 
-function pkc_getUserName(timeout = 0) {
+function pkc_getUserName() {
     return new Promise((resolve) => {
-        setTimeout(() => {
-            let orig_hd = JSON.parse(mt_headers);
-            let tk =  getUserToekn(orig_hd['Cookie']);
-            let url = {
-                url: `https://open.meituan.com/user/v1/info/auditting?fields=auditUsername&joinKey=&channelEnc=`,
-                headers : {
-                    'Origin' : `https://mtaccount.meituan.com`,
-                    'Accept-Encoding' : `gzip, deflate, br`,
-                    'Connection' : `keep-alive`,
-                    'X-Titans-User' : ``,
-                    'Accept' : `*/*`,
-                    'Host' : `open.meituan.com`,
-                    'User-Agent' : orig_hd['User-Agent'],
-                    'Referer' : `https://mtaccount.meituan.com/`,
-                    'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
-                    'token' : tk
-                }
-            };
-            // console.log(JSON.stringify(url));
-            $.get(url, async (err, resp, data) => {
-                try {
-                    if (logs) $.log(`获取用户昵称(rights)🚩: ${data}`);
-                    if (resp && resp.statusCode === 200){
-                        try {
-                            $.signget = JSON.parse(data);
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【当前用户】：${$.signget['user']['username']}(${$.signget['user']['id']})\n`);
-                            userId = `${$.signget['user']['username']}(${$.signget['user']['id']})`;
-                        }catch (e) {
-                            $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败2：${data}`);
-                        }
-                    }else{
-                        $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败：${data}`);
+        let orig_hd = JSON.parse(mt_headers);
+        let tk =  getUserToekn(orig_hd['Cookie']);
+        let url = {
+            url: `https://open.meituan.com/user/v1/info/auditting?fields=auditUsername&joinKey=&channelEnc=`,
+            headers : {
+                'Origin' : `https://mtaccount.meituan.com`,
+                'Accept-Encoding' : `gzip, deflate, br`,
+                'Connection' : `keep-alive`,
+                'X-Titans-User' : ``,
+                'Accept' : `*/*`,
+                'Host' : `open.meituan.com`,
+                'User-Agent' : orig_hd['User-Agent'],
+                'Referer' : `https://mtaccount.meituan.com/`,
+                'Accept-Language' : `zh-CN,zh-Hans;q=0.9`,
+                'token' : tk
+            }
+        };
+        // console.log(JSON.stringify(url));
+        $.get(url, (err, resp, data) => {
+            try {
+                if (logs) $.log(`获取用户昵称(rights)🚩: ${data}`);
+                if (resp && resp.statusCode === 200){
+                    try {
+                        $.signget = JSON.parse(data);
+                        console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【当前用户】：${$.signget['user']['username']}(${$.signget['user']['id']})\n`);
+                        userId = `${$.signget['user']['username']}(${$.signget['user']['id']})`;
+                    }catch (e) {
+                        $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败2：${data}`);
                     }
-
-                } catch (e) {
-                    $.logErr(e, resp);
-                } finally {
-                    resolve()
+                }else{
+                    $.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败：${data}`);
                 }
-            })
-        }, timeout)
+
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve()
+            }
+        })
     })
 }
 //美团抢券
