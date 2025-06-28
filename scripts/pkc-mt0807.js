@@ -177,7 +177,7 @@ async function GetCookie() {
             userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         }
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
-        $done();
+        $.done();
     }
     if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
          mt_headers = JSON.stringify($request.headers);
@@ -195,7 +195,7 @@ async function GetCookie() {
             userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         }
         $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
-        $done();
+        $.done();
     }
 
     if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
@@ -212,7 +212,7 @@ async function GetCookie() {
             `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
         );
         $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
-        $done();
+        $.done();
     }
 }
 
