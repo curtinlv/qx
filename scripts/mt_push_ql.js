@@ -184,7 +184,7 @@ async function pkc_getUserName(timeout = 0) {
 						try {
 							$.signget = JSON.parse(data);
 							console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【当前用户】：${$.signget['user']['username']}(${$.signget['user']['id']})\n`);
-							userId = `${$.signget['user']['username']}(${$.signget['user']['id']})`;
+							userId = `${$.signget['user']['username']}`;
 						}catch (e) {
 							$.log(`[${$.time("MM-dd HH:mm:ss.S")}]获取用户昵称失败2：${data}`);
 						}
