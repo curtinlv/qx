@@ -227,7 +227,7 @@ console.log(
 let isGetCookie = typeof $request !== 'undefined'
 
 if (isGetCookie) {
-    await GetCookie()
+    GetCookie()
     $.done();
 } else {
 
