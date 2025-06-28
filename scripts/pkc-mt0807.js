@@ -151,7 +151,7 @@ if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
     isXtll = true;
 }
 
-function GetCookie() {
+async function GetCookie() {
     if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/fetchcoupon") >= 0)) {
          mt_headers = JSON.stringify($request.headers);
 
@@ -172,7 +172,7 @@ function GetCookie() {
         $.log(
             `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
         );
-        pkc_getUserName();
+        await pkc_getUserName();
         if (!userId){
             userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         }
@@ -190,7 +190,7 @@ function GetCookie() {
         if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
         if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
         if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
-        pkc_getUserName();
+        await pkc_getUserName();
         if (!userId){
             userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
         }
@@ -227,7 +227,7 @@ console.log(
 let isGetCookie = typeof $request !== 'undefined'
 
 if (isGetCookie) {
-    GetCookie()
+    await GetCookie()
     $.done();
 } else {
 
@@ -256,7 +256,7 @@ async function all() {
         );
         return;
     }
-    pkc_getUserName();
+    await pkc_getUserName();
     if (!userId){
         userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
     }
@@ -456,7 +456,7 @@ async function pkc_mtqj_rights_sx(timeout = 0) {
     })
 }
 
-function pkc_getUserName() {
+async function pkc_getUserName() {
     return new Promise((resolve) => {
         let orig_hd = JSON.parse(mt_headers);
         let tk =  getUserToekn(orig_hd['Cookie']);
