@@ -152,69 +152,74 @@ if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
 }
 
 async function GetCookie() {
-    if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/fetchcoupon") >= 0)) {
-         mt_headers = JSON.stringify($request.headers);
+    try {
+        if ($request && ($request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/fetchcoupon") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/fetchcoupon") >= 0)) {
+             mt_headers = JSON.stringify($request.headers);
 
-        mtgsig = $request.headers.mtgsig;
-        mt_Cookie = $request.headers.Cookie;
-        pkc_mt_body = $request.body;
-        mt_body = JSON.parse($request.body);
-        mtFingerprint = mt_body.mtFingerprint;
+            mtgsig = $request.headers.mtgsig;
+            mt_Cookie = $request.headers.Cookie;
+            pkc_mt_body = $request.body;
+            mt_body = JSON.parse($request.body);
+            mtFingerprint = mt_body.mtFingerprint;
 
-        pkc_mt_method = $request.method;
-        pkc_mt_url = $request.url;
-        if (mt_headers) $.setdata(mt_headers, "mt_headers");
-        if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
-        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
-        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
-        if (mtgsig) $.setdata(mtgsig, "mtgsig");
-        if (mtFingerprint) $.setdata(mtFingerprint, "mtFingerprint");
-        $.log(
-            `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
-        );
-        await pkc_getUserName();
-        if (!userId){
-            userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+            pkc_mt_method = $request.method;
+            pkc_mt_url = $request.url;
+            if (mt_headers) $.setdata(mt_headers, "mt_headers");
+            if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
+            if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
+            if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
+            if (mtgsig) $.setdata(mtgsig, "mtgsig");
+            if (mtFingerprint) $.setdata(mtFingerprint, "mtFingerprint");
+            $.log(
+                `[${$.name}] 获取美团抢券请求体✅: 成功,pkc_mt_url: ${pkc_mt_url}`
+            );
+            await pkc_getUserName();
+            if (!userId){
+                userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+            }
+            $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
+            // $.done();
         }
-        $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
-        // $.done();
-    }
-    if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
-         mt_headers = JSON.stringify($request.headers);
-         mt_Cookie = $request.headers.Cookie;
-        pkc_mt_body = $request.body;
-        pkc_mt_method = $request.method;
-        pkc_mt_url = $request.url;
-        // $.setdata("{}", "pkc_mt_headers");
-        if (mt_headers) $.setdata(mt_headers, "mt_headers");
-        if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
-        if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
-        if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
-        await pkc_getUserName();
-        if (!userId){
-            userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+        if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
+             mt_headers = JSON.stringify($request.headers);
+             mt_Cookie = $request.headers.Cookie;
+            pkc_mt_body = $request.body;
+            pkc_mt_method = $request.method;
+            pkc_mt_url = $request.url;
+            // $.setdata("{}", "pkc_mt_headers");
+            if (mt_headers) $.setdata(mt_headers, "mt_headers");
+            if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
+            if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
+            if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
+            await pkc_getUserName();
+            if (!userId){
+                userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
+            }
+            $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
+            // $.done();
         }
-        $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
-        // $.done();
-    }
 
-    if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
-        mt_headers_sx = JSON.stringify($request.headers);
-        pkc_mt_method_sx = $request.method;
-        pkc_mt_url_sx = $request.url;
-        pkc_mt_body_sx = $request.body;
-        $.setdata("{}", "pkc_mt_headers_sx");
-        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
-        if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
-        if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
-        if (pkc_mt_body_sx) $.setdata(pkc_mt_body_sx, "pkc_mt_body_sx");
-        $.log(
-            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
-        );
-        $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
-        // $.done();
+        if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
+            mt_headers_sx = JSON.stringify($request.headers);
+            pkc_mt_method_sx = $request.method;
+            pkc_mt_url_sx = $request.url;
+            pkc_mt_body_sx = $request.body;
+            $.setdata("{}", "pkc_mt_headers_sx");
+            if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
+            if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
+            if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
+            if (pkc_mt_body_sx) $.setdata(pkc_mt_body_sx, "pkc_mt_body_sx");
+            $.log(
+                `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${pkc_mt_url_sx}`
+            );
+            $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${pkc_mt_url_sx}`);
+            // $.done();
+        }
+    } catch (e) {
+        $.logErr(`获取ck出错`,e);
+    }finally {
+        $.done();
     }
-    $.done();
 }
 
 console.log(
