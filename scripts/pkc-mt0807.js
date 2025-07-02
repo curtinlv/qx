@@ -188,10 +188,8 @@ async function GetCookie() {
             if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
             if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
             if (mt_headers) await pkc_getUserName();
-            if (!userId){
-                userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
-            }
-            $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
+            if (!userId){userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';}
+            $.msg($.name, `获取美团cookie: 成功🎉`, `账号Id：${userId}`);
             $done();
         }
 
@@ -212,7 +210,7 @@ async function GetCookie() {
         //     // $.done();
         // }
     } catch (e) {
-        $.logErr(`获取ck出错`,e);
+        $.logErr(`获取ck出错: ${e}`);
     }finally {
         $done();
     }

@@ -20,6 +20,7 @@ const currentMinutes = now.getMinutes();
 const targetTimes = [
     {hour: 8, minute: 0},
     {hour: 11, minute: 00},
+    {hour: 14, minute: 00},
     {hour: 16, minute: 00},
 ];
 
@@ -111,10 +112,8 @@ if (url.indexOf(xtllUrl) != -1) {
         mt_headers_sx = JSON.stringify($request.headers);
         if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
         $.setdata(url, "pkc_mt_url_sx");
-        $.log(
-            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${url}`
-        );
-        $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${url}`);
+        $.log(`[${$.name}] 获取美团Url✅: 成功,pkc_mt_url_sx: ${url}`);
+        $.msg($.name, `获取美团Url: 成功✅`, `pkc_mt_url_sx`);
         $done({body});
     }
 }
