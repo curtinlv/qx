@@ -1,6 +1,6 @@
 /*
 美团抢券
-功能：qx自动重写抓取请求体 ，重放请求（定时任务），默认重放50次，第23行自行修改。
+功能：qx自动重写抓取请求体 ，重放请求（定时任务
 
 Author: Curtin
 date 2023.5.25
@@ -17,9 +17,6 @@ https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc-美
 ########################### 结束
 */
 const $ = Env("美团抢卷");
-let couponReferIds = '';  // 如果qx重写已抓取会优先使用重写的，这里可以不填
-let gdPageId = '513694'; // 如果qx重写已抓取会优先使用重写的，这里可以不填
-
 const pkc_qjnum = 50;  // 重放50次
 const timeoutMs = 10;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
@@ -134,18 +131,19 @@ else{
     mt_Cookie = $.getval('mt_Cookie')
 }
 
-if ($.isNode() && process.env.couponReferIds) {
-    couponReferIds = process.env.couponReferIds
-}
-else{
-    couponReferIds = $.getval('couponReferIds')
-}
-if ($.isNode() && process.env.gdPageId) {
-    gdPageId = process.env.gdPageId
-}
-else{
-    gdPageId = $.getval('gdPageId')
-}
+//
+// if ($.isNode() && process.env.couponReferIds) {
+//     couponReferIds = process.env.couponReferIds
+// }
+// else{
+//     couponReferIds = $.getval('couponReferIds')
+// }
+// if ($.isNode() && process.env.gdPageId) {
+//     gdPageId = process.env.gdPageId
+// }
+// else{
+//     gdPageId = $.getval('gdPageId')
+// }
 if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
     // console.log("夏天来了")
     isXtll = true;
@@ -181,8 +179,8 @@ async function GetCookie() {
         //     // $.done();
         // }
         if ($request && $request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/grab") >= 0) {
-             mt_headers = JSON.stringify($request.headers);
-             mt_Cookie = $request.headers.Cookie;
+            mt_headers = JSON.stringify($request.headers);
+            mt_Cookie = $request.headers.Cookie;
             pkc_mt_body = $request.body;
             pkc_mt_url = $request.url;
             if (mt_headers) $.setdata(mt_headers, "mt_headers");
@@ -194,7 +192,7 @@ async function GetCookie() {
                 userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
             }
             $.msg($.name, `获取美团mt_Cookieg: 成功🎉`, `用户ID：${userId}`);
-            // $.done();
+            $done();
         }
 
         // if ($request && ($request.url.indexOf("rights-apigw.meituan.com/api/rights/activity/secKill/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/limitcouponcomponent/info") >= 0 || $request.url.indexOf("promotion.waimai.meituan.com/lottery/rights/limitcouponcomponent/info") >= 0)) {
@@ -307,20 +305,12 @@ async function all() {
             }
         }
     }else{
-        // $.msg($.name, `美团抢券-当前请求mtgsig`, `${mtgsig}`);
-        // $.msg($.name, `美团抢券-当前请求mtFingerprint`, `${mtFingerprint}`);
-        // $.msg($.name, `美团抢券-当前请求couponReferIds`, `${couponReferIds}`);
-        // $.msg($.name, `美团抢券-当前请求pkc_mt_url`, `${pkc_mt_url}`);
-        // $.msg($.name, `美团抢券-当前请求mt_Cookie`, `${mt_Cookie}`);
-        // $.msg($.name, `美团抢券-当前请求pkc_mt_body`, `${pkc_mt_body}`);
         $.log(`美团抢券-当前mt_headers=${mt_headers}`);
         $.log(`美团抢券-当前请求pkc_mt_url=${pkc_mt_url}`);
         $.log(`美团抢券-当前请求pkc_mt_body=${pkc_mt_body}`);
 
         $.log(`美团抢券-当前mt_headers_sx=${mt_headers_sx}`);
         $.log(`美团抢券-当前pkc_mt_url_sx=${pkc_mt_url_sx}`);
-        $.log(`美团抢券-当前pkc_mt_body_sx=${pkc_mt_body_sx}`);
-
     }
 
 }
