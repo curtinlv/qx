@@ -218,7 +218,7 @@ async function GetCookie() {
     } catch (e) {
         $.logErr(`获取ck出错`,e);
     }finally {
-        $.done();
+        $done();
     }
 }
 
