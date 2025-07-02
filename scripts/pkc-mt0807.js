@@ -204,7 +204,7 @@ async function GetCookie() {
             pkc_mt_method_sx = $request.method;
             pkc_mt_url_sx = $request.url;
             pkc_mt_body_sx = $request.body;
-            $.setdata("{}", "pkc_mt_headers_sx");
+            // $.setdata("{}", "pkc_mt_headers_sx");
             if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
             if (pkc_mt_method_sx) $.setdata(pkc_mt_method_sx, "pkc_mt_method_sx");
             if (pkc_mt_url_sx) $.setdata(pkc_mt_url_sx, "pkc_mt_url_sx");
