@@ -283,7 +283,7 @@ async function getAllEnvs(timeout = 0) {
                         $.envsList = $.envsData.data;
                         // return $.envsData.data;
                     } else {
-                        $.msg(`获取变量失败~`, ``, `${$.envsData.msg}`);
+                        $.msg($.name, `获取变量失败~`, `${$.envsData.msg}`);
 						$.done();
                     }
                 } catch (e) {
@@ -341,9 +341,9 @@ async function addEnv(envData) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     if (JSON.parse(data).code === 200) {
-                        $.msg('美团ck上传青龙成功', `美团ID: ${userId}`, '');
+                        $.msg($.name, `成功推送美团账号: ${userId}`, ` `);
                     }else{
-                        $.msg('美团ck上传青龙失败', `${data}`, '');
+                        $.msg($.name, `失败：${data}`, ' ');
                     }
                 }
             } catch (e) {
@@ -355,37 +355,37 @@ async function addEnv(envData) {
         })
     })
 }
-function updateEnv(updateEnvBody) {
-    return new Promise(resolve => {
-
-        const url = qlUrl + `/open/envs`
-        const method = "PUT";
-        const headers = {
-            "Content-Type": "application/json",
-            "accept": "application/json",
-            "Authorization": "Bearer " + qlToken
-        };
-        const myRequest = {
-            url: url,
-            method: method, // Optional, default GET.
-            headers: headers, // Optional.
-            body: JSON.stringify(updateEnvBody) // Optional.
-        };
-
-        $task.fetch(myRequest).then(response => {
-            if (JSON.parse(response.body).code === 200) {
-                $.msg('【更新】饿了么ck上传青龙成功', `用户${updateEnvBody["remarks"]}[id:${userIDValue}]`, '');
-            }else{
-                $.msg('【更新】饿了么ck上传青龙失败', `${response.body}`, '');
-            }
-            $.done();
-        }, reason => {
-            console.log(`${reason.error}`)
-            console.log(`${$.name} API请求失败，请检查网路重试`)
-            $done();
-        });
-    })
-}
+// function updateEnv(updateEnvBody) {
+//     return new Promise(resolve => {
+//
+//         const url = qlUrl + `/open/envs`
+//         const method = "PUT";
+//         const headers = {
+//             "Content-Type": "application/json",
+//             "accept": "application/json",
+//             "Authorization": "Bearer " + qlToken
+//         };
+//         const myRequest = {
+//             url: url,
+//             method: method, // Optional, default GET.
+//             headers: headers, // Optional.
+//             body: JSON.stringify(updateEnvBody) // Optional.
+//         };
+//
+//         $task.fetch(myRequest).then(response => {
+//             if (JSON.parse(response.body).code === 200) {
+//                 $.msg('【更新】饿了么ck上传青龙成功', `用户${updateEnvBody["remarks"]}[id:${userIDValue}]`, '');
+//             }else{
+//                 $.msg('【更新】饿了么ck上传青龙失败', `${response.body}`, '');
+//             }
+//             $.done();
+//         }, reason => {
+//             console.log(`${reason.error}`)
+//             console.log(`${$.name} API请求失败，请检查网路重试`)
+//             $done();
+//         });
+//     })
+// }
 async function deleteEnv(list) {
     return new Promise((resolve) => {
         setTimeout(() => {
