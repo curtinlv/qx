@@ -188,7 +188,7 @@ async function GetCookie() {
             pkc_mt_url = $request.url;
             // $.setdata("{}", "pkc_mt_headers");
             if (mt_headers) $.setdata(mt_headers, "mt_headers");
-            if (mt_Cookie) $.setdata(mt_headers, "mt_Cookie");
+            if (mt_Cookie) $.setdata(mt_Cookie, "mt_Cookie");
             if (pkc_mt_url) $.setdata(pkc_mt_url, "pkc_mt_url");
             if (pkc_mt_body) $.setdata(pkc_mt_body, "pkc_mt_body");
             await pkc_getUserName();
