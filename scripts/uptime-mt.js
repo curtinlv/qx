@@ -8,142 +8,151 @@ promotion.waimai.meituan.com
 
 [rewrite_remote]
 #更改美团抢券时间，强制触发抢券按钮
-promotion.waimai.meituan.com/lottery/limitcouponcomponent/(getTime|info) url script-response-body https://raw.githubusercontent.com/curtinlv/qx/main/scripts/uptime-mt.js
-
+rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-body uptime-mt.js
 */
 const $ = Env("美团触发时间、获取保存couponReferIds");
-// 这里修改来抢的时间，再开启本重写。
-const timeStr = '12:00:00';
-
+// 自动判断最近的抢券时间点
 const now = new Date();
-const year = now.getFullYear();
-const month = (now.getMonth() + 1).toString().padStart(2, '0');
-const day = now.getDate().toString().padStart(2, '0');
+const currentHour = now.getHours();
+const currentMinutes = now.getMinutes();
 
+// 定义抢券时间点(小时,分钟)
+const targetTimes = [
+    {hour: 8, minute: 0},
+    {hour: 11, minute: 00},
+    {hour: 16, minute: 00},
+];
 
-// 创建一个新的 Date 对象，设置日期为 now 的日期加一
-const nextDay = new Date(now);
-nextDay.setDate(now.getDate() + 1);
+// 默认设置为当天第一个时间点
+let targetTime = {...targetTimes[0]};
+let dateAdjustment = 0; // 0表示当天，1表示明天
 
-// 获取新的日期的日期部分，并格式化为两位数的字符串
-const nextDayStr = nextDay.getDate().toString().padStart(2, '0');
+// 找到下一个最近的抢券时间点
+for (let i = 0; i < targetTimes.length; i++) {
+    const time = targetTimes[i];
+    if (currentHour < time.hour ||
+        (currentHour === time.hour && currentMinutes < time.minute)) {
+        targetTime = time;
+        dateAdjustment = 0;
+        break;
+    }
+}
 
+// 如果当前时间已超过所有时间点，则设置为第二天的第一个时间点
+if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 0)) {
+    targetTime = {...targetTimes[0]};
+    dateAdjustment = 1;
+}
+
+// 设置目标日期
+const targetDate = new Date(now);
+targetDate.setDate(now.getDate() + dateAdjustment);
+
+const year = targetDate.getFullYear();
+const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
+const day = targetDate.getDate().toString().padStart(2, '0');
+const timeStr = `${targetTime.hour.toString().padStart(2, '0')}:${targetTime.minute.toString().padStart(2, '0')}:00`;
 
 const dateStr = `${year}-${month}-${day} ${timeStr}`;
 
-// const dateStr = '2023-01-22 12:58:38';
-// const timestamp = new Date(dateStr).getTime();
-
-// const dateStr = '2023-06-02 17:00:00';
-// const timestamp = new Date(dateStr).getTime();
 // 将时间字符串转换为本地时间对象
 const localTime = new Date(dateStr.replace(/-/g, '/'));
 
 // 将本地时间转换为时间戳（单位：秒）
 const timestamp = Math.floor(localTime.getTime());
 
+// 其余代码保持不变...
 
 
 var url = $request.url;
-const path1 = "promotion.waimai.meituan.com/lottery/limitcouponcomponent/getTime";
+// const path1 = "promotion.waimai.meituan.com/lottery/limitcouponcomponent/getTime";
+// const pathTime1 = "market.waimai.meituan.com/lottery/limitcouponcomponent/getTime";
+const xtllUrl = "apigw.meituan.com/api/rights/activity/secKill/info";
 
-const pathTime1 = "market.waimai.meituan.com/lottery/limitcouponcomponent/getTime";
-const xtllUrl = "https://rights-apigw.meituan.com/api/rights/activity/secKill/info";
-
-
-if (url.indexOf(path1) != -1) {
-
-    // $notify("美团更改时间", dateStr, "成功抓取请求体后，记得关闭重写 或 更新下一次的抢券时间");
-    console.log("美团更改时间", dateStr, "");
-    if(typeof $response !== "undefined"){
-        let obj = {
-            "code" : 0,
-            "subcode" : 0,
-            "data" : timestamp,
-            "msg" : "success"
-        }
-
-        var body = JSON.stringify(obj);
-        console.log(`${JSON.stringify(obj, null, '\t')}`);
-        $done({body});
-    }
-}
-
-if (url.indexOf(pathTime1) != -1) {
-
-    // $notify("美团更改时间", dateStr, "成功抓取请求体后，记得关闭重写 或 更新下一次的抢券时间");
-    console.log("美团更改时间20250425", dateStr, "");
-    if(typeof $response !== "undefined"){
-        let obj = {
-            "code" : 0,
-            "subcode" : 0,
-            "data" : timestamp,
-            "msg" : "success"
-        }
-
-
-
-        var body = JSON.stringify(obj);
-        console.log(`${JSON.stringify(obj, null, '\t')}`);
-        $done({body});
-    }
-}
+// if (url.indexOf(path1) != -1) {
+//     console.log("美团更改时间", dateStr, "");
+//     if(typeof $response !== "undefined"){
+//         let obj = {
+//             "code" : 0,
+//             "subcode" : 0,
+//             "data" : timestamp,
+//             "msg" : "success"
+//         }
+//
+//         var body = JSON.stringify(obj);
+//         console.log(`${JSON.stringify(obj, null, '\t')}`);
+//         $done({body});
+//     }
+// }
+//
+// if (url.indexOf(pathTime1) != -1) {
+//     console.log("美团更改时间20250425", dateStr, "");
+//     if(typeof $response !== "undefined"){
+//         let obj = {
+//             "code" : 0,
+//             "subcode" : 0,
+//             "data" : timestamp,
+//             "msg" : "success"
+//         }
+//
+//         var body = JSON.stringify(obj);
+//         console.log(`${JSON.stringify(obj, null, '\t')}`);
+//         $done({body});
+//     }
+// }
 
 if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
-        // if (obj2.data.nextGrabCouponInfo){
-        //     obj2.data.currentGrabCouponInfo=obj2.data.nextGrabCouponInfo;
-        // }
         obj2.data.currentTime=timestamp/1000;
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
+        // 获取请求刷新
+        mt_headers_sx = JSON.stringify($request.headers);
+        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
+        $.setdata(url, "pkc_mt_url_sx");
+        $.log(
+            `[${$.name}] 获取美团抢券请求体SX✅: 成功,pkc_mt_url_sx: ${url}`
+        );
+        $.msg($.name, `获取美团刷新Url: 成功🎉`, `pkc_mt_url_sx：${url}`);
         $done({body});
     }
 }
-
-
-
-const path2 = "promotion.waimai.meituan.com/lottery/limitcouponcomponent/info";
-const path3="/lottery/rights/limitcouponcomponent/info";
-
-if ($request.url.indexOf(path2) != -1 || $request.url.indexOf(path3) != -1) {
-    console.log($request.url);
-
-    if(typeof $response !== "undefined"){
-       const params = new URLSearchParams(url.split('?')[1]);
-console.log(JSON.stringify(params));
-        let couponReferIds_list = params.get('couponReferIds');
-        let couponReferIds = couponReferIds_list.split(',')[0];
-        let gdPageId = params.get('gdPageId');
-        console.log(`couponReferIds=${couponReferIds} gdPageId=${gdPageId}`);
-        let obj2 = JSON.parse($response.body);
-// 抢过继续抢
- // obj2.data.couponInfo=
-            if (obj2.data && obj2.data.couponInfo) {
-
-      for (let id in obj2.data.couponInfo) {
-        console.log(`id = ${id}`);
-        if (obj2.data.couponInfo[id] !== null) {
-          obj2.data.couponInfo[id].status = 0;
-            obj2.data.couponInfo[id].progressPercent=0;
-            // obj2.data.couponInfo[id].couponRedirectType=4;
-        }
-      }
-    }
-        var body = JSON.stringify(obj2);
-        console.log(`${JSON.stringify(obj2, null, '\t')}`);
-
-        // if (mt_headers) $.setdata(mt_headers, "mt_headers");
-        if (couponReferIds) $.setdata(couponReferIds, "couponReferIds");
-        if (gdPageId) $.setdata(gdPageId, "gdPageId");
-        // $notify($.name, `获取美团couponReferIds: 成功🎉`, `couponReferIds：${couponReferIds} gdPageId = ${gdPageId}`);
-
-
-        $done({body});
-    }
-}
-
+//
+// const path2 = "promotion.waimai.meituan.com/lottery/limitcouponcomponent/info";
+// const path3="/lottery/rights/limitcouponcomponent/info";
+//
+// if ($request.url.indexOf(path2) != -1 || $request.url.indexOf(path3) != -1) {
+//     console.log($request.url);
+//
+//     if(typeof $response !== "undefined"){
+//        const params = new URLSearchParams(url.split('?')[1]);
+// console.log(JSON.stringify(params));
+//         let couponReferIds_list = params.get('couponReferIds');
+//         let couponReferIds = couponReferIds_list.split(',')[0];
+//         let gdPageId = params.get('gdPageId');
+//         console.log(`couponReferIds=${couponReferIds} gdPageId=${gdPageId}`);
+//         let obj2 = JSON.parse($response.body);
+// // 抢过继续抢
+//  // obj2.data.couponInfo=
+//         if (obj2.data && obj2.data.couponInfo) {
+//             for (let id in obj2.data.couponInfo) {
+//                 console.log(`id = ${id}`);
+//                 if (obj2.data.couponInfo[id] !== null) {
+//                     obj2.data.couponInfo[id].status = 0;
+//                     obj2.data.couponInfo[id].progressPercent=0;
+//                 }
+//             }
+//         }
+//         var body = JSON.stringify(obj2);
+//         console.log(`${JSON.stringify(obj2, null, '\t')}`);
+//
+//         if (couponReferIds) $.setdata(couponReferIds, "couponReferIds");
+//         if (gdPageId) $.setdata(gdPageId, "gdPageId");
+//
+//         $done({body});
+//     }
+// }
 
 // prettier-ignore
 function Env(t, e) {

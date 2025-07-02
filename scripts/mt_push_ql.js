@@ -108,7 +108,7 @@ if (true) {
 
 async function GetRewrite() {
     if (qlUrl.length > 0 && clientSecret.length > 0 && clientId.length >0){
-		await pkc_getUserName();
+		if (mt_headers) await pkc_getUserName();
 		if (!userId){
 			userId = await getUserId(mt_Cookie);
 		}
@@ -160,7 +160,7 @@ async function pkc_getUserName(timeout = 0) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			let orig_hd = $.toObj(mt_headers, `header转换失败`);
-			let tk =  getUserToekn(orig_hd['Cookie']);
+        	let tk = mt_Cookie ? getUserToekn(mt_Cookie):getUserToekn(orig_hd['Cookie']?orig_hd['Cookie']:orig_hd['cookie']);
 			let url = {
 				url: `https://open.meituan.com/user/v1/info/auditting?fields=auditUsername&joinKey=&channelEnc=`,
 				headers : {
