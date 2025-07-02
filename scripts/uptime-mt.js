@@ -10,7 +10,7 @@ promotion.waimai.meituan.com
 #更改美团抢券时间，强制触发抢券按钮
 rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-body uptime-mt.js
 */
-const $ = Env("美团触发时间、获取保存couponReferIds");
+const $ = Env("【美团抢券】时间修改");
 // 自动判断最近的抢券时间点
 const now = new Date();
 const currentHour = now.getHours();
