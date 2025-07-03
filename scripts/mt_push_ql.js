@@ -693,7 +693,7 @@ function Env(t, e) {
 		delete(t, e = (() => {})) {
 			if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
 				"X-Surge-Skip-Scripting": !1
-			})), $httpClient.post(t, (t, s, i) => {
+			})), $httpClient.delete(t, (t, s, i) => {
 				!t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
 			});
 			else if (this.isQuanX()) t.method = "DELETE", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
