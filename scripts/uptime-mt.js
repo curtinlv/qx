@@ -108,6 +108,12 @@ if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
         obj2.data.currentTime=timestamp/1000;
+        if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]){
+            if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] === 8){
+                obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]=2;
+                $.msg($.name, `已抢过，强制点亮按钮`, ``);
+            }
+        }
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
         // 获取请求刷新
