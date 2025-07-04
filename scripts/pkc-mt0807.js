@@ -26,7 +26,7 @@ pkc_select = 1; // 1:抢券 2：仅打印当前环境变量 body header url参�
 
 // $.idx = ($.idx = ($.getval('HuaHuiSuffix') || '1') - 1) > 0 ? ($.idx + 1 + '') : ''; // 账号扩展字符
 const notify = $.isNode() ? require("./sendNotify") : ``;
-const logs = 0; // 0为关闭日志，1为开启
+const logs = 1; // 0为关闭日志，1为开启
 const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
