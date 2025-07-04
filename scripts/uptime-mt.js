@@ -19,9 +19,11 @@ const currentMinutes = now.getMinutes();
 // 定义抢券时间点(小时,分钟)
 const targetTimes = [
     {hour: 8, minute: 0},
-    {hour: 11, minute: 00},
+    {hour: 10, minute: 00},
+    {hour: 12, minute: 00},
     {hour: 14, minute: 00},
     {hour: 16, minute: 00},
+    {hour: 18, minute: 00},
 ];
 
 // 默认设置为当天第一个时间点
