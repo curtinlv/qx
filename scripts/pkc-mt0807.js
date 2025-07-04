@@ -289,11 +289,11 @@ async function all() {
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             if (isXtll){
-                pkc_mtqj_xtll() //
-                await pkcSleep(sleepNum);
+                await pkc_mtqj_xtll() //
+                // await pkcSleep(sleepNum);
             }else{
-                pkc_mtqj() //
-                await pkcSleep(sleepNum);
+                await pkc_mtqj() //
+                // await pkcSleep(sleepNum);
             }
             if (pkc_flag || isOutTime(0, timeoutMs2) || isOutTime(30, timeoutMs2)){
                 break;
