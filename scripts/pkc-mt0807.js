@@ -281,11 +281,12 @@ async function all() {
                 }
             }
         }
-
+        let sNum = 100;
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             await pkc_mtqj_xtll() //
-            await pkcSleep(sleepNum);
+            await pkcSleep(sNum);
+            sNum = sNum+50;
             // if (isXtll){
             //     await pkc_mtqj_xtll() //
             //     // await pkcSleep(sleepNum);
