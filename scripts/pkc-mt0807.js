@@ -17,7 +17,7 @@ https://raw.githubusercontent.com/curtinlv/qx/main/rewrite/pkc.conf, tag=pkc-美
 ########################### 结束
 */
 const $ = Env("美团抢卷");
-const pkc_qjnum = 50;  // 重放50次
+const pkc_qjnum = 9;  // 重放10次
 const timeoutMs = 10;  // 最多执行5秒即停止重放
 const timeoutMs2 = 1;  // 整点后，大于N秒即停止重放,如3秒
 const sleepNum = 100;  // 休眠时间，单位毫秒
