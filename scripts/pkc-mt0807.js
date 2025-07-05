@@ -286,7 +286,7 @@ async function all() {
             pkc_flag = false;
             await pkc_mtqj_xtll() //
             await pkcSleep(sNum);
-            sNum = sNum+50;
+            sNum = sNum+100;
             // if (isXtll){
             //     await pkc_mtqj_xtll() //
             //     // await pkcSleep(sleepNum);
