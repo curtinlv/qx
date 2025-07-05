@@ -233,7 +233,7 @@ if (isGetCookie) {
 
     !(async () => {
         await all();
-        await pkcSleep(3);
+        await pkcSleep(3000);
         await msgShow();
 
     })()
@@ -285,6 +285,7 @@ async function all() {
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
             await pkc_mtqj_xtll() //
+            await pkcSleep(sleepNum);
             // if (isXtll){
             //     await pkc_mtqj_xtll() //
             //     // await pkcSleep(sleepNum);
