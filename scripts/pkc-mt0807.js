@@ -556,6 +556,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
 //             console.log(JSON.stringify(url));
             $.post(url, async (err, resp, data) => {
                 try {
+                    if (resp){ $.log(`statusCode = ${resp.statusCode}`)};
                     if (logs) $.log(`开始抢券🚩: ${data}`);
                     if (typeof data == "string" && data.indexOf("403 Forbidden") >= 0){
                         console.log(`[${$.time("MM-dd HH:mm:ss.S")}]403 暂停抢券`);
@@ -569,7 +570,7 @@ async function pkc_mtqj_xtll(timeout = 0) {
                         }else if ($.signget['data'] && $.signget['data']['coupon']['toastMsg'].indexOf("抢完了") >= 0){
                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
-                        }else if ($.signget['data'] && $.signget['data']['subCode'] === 9020){
+                        }else if ($.signget['data'] && $.signget['data']['subCode'] && ($.signget['data']['subCode'] === 9020 || $.signget['data']['subCode'] === 9017)){
                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${$.signget['data']['coupon']['toastMsg']}\n`;
                             pkc_flag = true;
                         }else{
