@@ -30,7 +30,7 @@ const logs = 1; // 0为关闭日志，1为开启
 const notifyInterval = 1; // 0为关闭通知，1为所有通知，
 const notifyttt = 1 // 0为关闭外部推送，1为所有通知
 $.message = '', COOKIES_SPLIT = '';
-let isXtll = false;
+// let isXtll = false;
 let userId = ``;
 // let mtgsig  = ``;
 // let mtFingerprint = ``;
@@ -39,12 +39,12 @@ let mt_Cookie = ``;
 
 
 let mt_headers =  ``;
-let pkc_mt_method  = ``;
+// let pkc_mt_method  = ``;
 let pkc_mt_url = ``;
 let pkc_mt_body = ``;
 
 let mt_headers_sx =  ``;
-let pkc_mt_method_sx  = ``;
+// let pkc_mt_method_sx  = ``;
 let pkc_mt_url_sx = ``;
 let pkc_mt_body_sx = ``;
 
@@ -56,13 +56,13 @@ else{
     mt_headers = $.getval('mt_headers')
 }
 
-if ($.isNode() && process.env.pkc_mt_method) {
-
-    pkc_mt_method = process.env.pkc_mt_method
-}
-else{
-    pkc_mt_method = $.getval('pkc_mt_method')
-}
+// if ($.isNode() && process.env.pkc_mt_method) {
+//
+//     pkc_mt_method = process.env.pkc_mt_method
+// }
+// else{
+//     pkc_mt_method = $.getval('pkc_mt_method')
+// }
 
 if ($.isNode() && process.env.pkc_mt_url) {
 
@@ -87,13 +87,13 @@ else{
     mt_headers_sx = $.getval('mt_headers_sx')
 }
 
-if ($.isNode() && process.env.pkc_mt_method_sx) {
-
-    pkc_mt_method_sx = process.env.pkc_mt_method_sx
-}
-else{
-    pkc_mt_method_sx = $.getval('pkc_mt_method_sx')
-}
+// if ($.isNode() && process.env.pkc_mt_method_sx) {
+//
+//     pkc_mt_method_sx = process.env.pkc_mt_method_sx
+// }
+// else{
+//     pkc_mt_method_sx = $.getval('pkc_mt_method_sx')
+// }
 
 if ($.isNode() && process.env.pkc_mt_url_sx) {
 
@@ -144,10 +144,10 @@ else{
 // else{
 //     gdPageId = $.getval('gdPageId')
 // }
-if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
-    // console.log("夏天来了")
-    isXtll = true;
-}
+// if (pkc_mt_url && pkc_mt_url.indexOf("rights-apigw.meituan.com") >= 0) {
+//     // console.log("夏天来了")
+//     isXtll = true;
+// }
 
 async function GetCookie() {
     try {
@@ -261,12 +261,8 @@ async function all() {
         userId = mt_Cookie ? getUserId(mt_Cookie):'美团用户';
     }
     if(pkc_select === 1){
-        // if (isXtll){
-        // }
+
         await pkc_mtqj_rights_sx()
-        // else{
-        //     await pkc_mtqj_sx() //
-        // }
         const startTime = Date.now();
         if (pkc_qjnum > 1){
             let sss = 0;
@@ -288,13 +284,14 @@ async function all() {
 
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
-            if (isXtll){
-                await pkc_mtqj_xtll() //
-                // await pkcSleep(sleepNum);
-            }else{
-                await pkc_mtqj() //
-                // await pkcSleep(sleepNum);
-            }
+            await pkc_mtqj_xtll() //
+            // if (isXtll){
+            //     await pkc_mtqj_xtll() //
+            //     // await pkcSleep(sleepNum);
+            // }else{
+            //     await pkc_mtqj() //
+            //     // await pkcSleep(sleepNum);
+            // }
             if (pkc_flag || isOutTime(0, timeoutMs2) || isOutTime(30, timeoutMs2)){
                 break;
             }
@@ -492,59 +489,59 @@ async function pkc_getUserName() {
     })
 }
 //美团抢券
-async function pkc_mtqj(timeout = 0) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            let url = {
-                url: pkc_mt_url,
-                headers: JSON.parse(mt_headers),
-                body: pkc_mt_body,
-            };
-//             console.log(JSON.stringify(url));
-            $.post(url, async (err, resp, data) => {
-                try {
-                    if (logs) $.log(`开始抢券🚩: ${data}`);
-                    if (typeof data == "string" && data.indexOf("403 Forbidden") >= 0){
-                        console.log(`403 暂停抢券`);
-                        pkc_flag = true;
-                    }else{
-                        $.signget = JSON.parse(data);
-                        // console.log(JSON.stringify($.signget));
-                        if ($.signget.code === 0 && $.signget.subcode === 0){
-//                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${JSON.stringify($.signget)}\n`);
-                            $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${JSON.stringify($.signget)}\n`;
-                            pkc_flag = true;
-                        }
-                        else if ($.signget.code === 1 && $.signget.subcode === 2){
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${JSON.stringify($.signget)}\n`);
-                            // $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
-                            // pkc_flag = true;
-                        }
-//                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
-//                         console.log(`【抢券失败】：${data}\n`);
-//                         $.message += `【抢券失败】：${data}\n`;
+// async function pkc_mtqj(timeout = 0) {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             let url = {
+//                 url: pkc_mt_url,
+//                 headers: JSON.parse(mt_headers),
+//                 body: pkc_mt_body,
+//             };
+// //             console.log(JSON.stringify(url));
+//             $.post(url, async (err, resp, data) => {
+//                 try {
+//                     if (logs) $.log(`开始抢券🚩: ${data}`);
+//                     if (typeof data == "string" && data.indexOf("403 Forbidden") >= 0){
+//                         console.log(`403 暂停抢券`);
 //                         pkc_flag = true;
+//                     }else{
+//                         $.signget = JSON.parse(data);
+//                         // console.log(JSON.stringify($.signget));
+//                         if ($.signget.code === 0 && $.signget.subcode === 0){
+// //                         console.log(`[${new Date().toISOString().replace('T', ' ').replace('Z', '')}]【成功抢券】：${data}\n`);
+//                             console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${JSON.stringify($.signget)}\n`);
+//                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【成功抢券】：${JSON.stringify($.signget)}\n`;
+//                             pkc_flag = true;
+//                         }
+//                         else if ($.signget.code === 1 && $.signget.subcode === 2){
+//                             console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${JSON.stringify($.signget)}\n`);
+//                             // $.message += `【继续尝试】：${JSON.stringify($.signget)}\n`;
+//                             // pkc_flag = true;
+//                         }
+// //                     else if (($.signget.code === 1) && ($.signget.subcode === 1 || $.signget.subcode === 11)){
+// //                         console.log(`【抢券失败】：${data}\n`);
+// //                         $.message += `【抢券失败】：${data}\n`;
+// //                         pkc_flag = true;
+// //                     }
+//                         else if ($.signget.code === 1 && $.signget.subcode === 3){
+//                             console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${JSON.stringify($.signget)}\n`);
+// //                         $.message += `【继续尝试】：${data}\n`;
+//                         }else{
+//                             console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${JSON.stringify($.signget)}\n`);
+//                             $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${JSON.stringify($.signget)}\n`;
+//                             // pkc_flag = true;
+//                         }
 //                     }
-                        else if ($.signget.code === 1 && $.signget.subcode === 3){
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【继续尝试】：${JSON.stringify($.signget)}\n`);
-//                         $.message += `【继续尝试】：${data}\n`;
-                        }else{
-                            console.log(`[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${JSON.stringify($.signget)}\n`);
-                            $.message += `[${$.time("MM-dd HH:mm:ss.S")}]【抢券失败】：${JSON.stringify($.signget)}\n`;
-                            // pkc_flag = true;
-                        }
-                    }
-
-                } catch (e) {
-                    $.logErr(e, resp);
-                } finally {
-                    resolve()
-                }
-            })
-        }, timeout)
-    })
-}
+//
+//                 } catch (e) {
+//                     $.logErr(e, resp);
+//                 } finally {
+//                     resolve()
+//                 }
+//             })
+//         }, timeout)
+//     })
+// }
 
 
 //美团抢券-夏天来了
@@ -611,10 +608,20 @@ function msgShow() {
     })
 }
 // 判断是否为分钟是否为0
+// async function isMinuteZero() {
+//     const now = new Date();
+//     const minutes = now.getMinutes();
+//     return minutes % 30 === 0;
+// }
 async function isMinuteZero() {
     const now = new Date();
     const minutes = now.getMinutes();
-    return minutes % 30 === 0;
+    const seconds = now.getSeconds();
+    const milliseconds = now.getMilliseconds();
+
+    return (minutes === 29 || minutes === 59) &&
+           seconds > 58 &&
+           milliseconds > 500;
 }
 function isOutTime(m, s) {
     const now = new Date();
