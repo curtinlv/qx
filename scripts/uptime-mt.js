@@ -24,6 +24,11 @@ const targetTimes = [
     {hour: 14, minute: 00},
     {hour: 16, minute: 00},
     {hour: 18, minute: 00},
+    {hour: 19, minute: 00},
+    {hour: 20, minute: 00},
+    {hour: 21, minute: 00},
+    {hour: 22, minute: 00},
+    {hour: 23, minute: 00},
 ];
 
 // 默认设置为当天第一个时间点
@@ -108,7 +113,7 @@ if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
         obj2.data.currentTime=timestamp/1000;
-        if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]){
+        if (typeof obj2.data["currentGrabCouponInfo"] !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"]  !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"][0] !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] !== "undefined"){
             if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] === 8){
                 obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]=2;
                 $.msg($.name, `已抢过，强制点亮按钮`, ``);
