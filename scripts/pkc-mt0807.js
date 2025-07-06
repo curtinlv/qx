@@ -624,7 +624,7 @@ async function isMinuteZero() {
 
     return (minutes === 29 || minutes === 59) &&
            seconds > 58 &&
-           milliseconds > 500;
+           milliseconds > 800;
 }
 function isOutTime(m, s) {
     const now = new Date();
