@@ -47,10 +47,10 @@ for (let i = 0; i < targetTimes.length; i++) {
 }
 
 // 如果当前时间已超过所有时间点，则设置为第二天的第一个时间点
-if (currentHour > 18 || (currentHour === 18 && currentMinutes >= 0)) {
-    targetTime = {...targetTimes[0]};
-    dateAdjustment = 1;
-}
+// if (currentHour > 23 || (currentHour === 23 && currentMinutes >= 0)) {
+//     targetTime = {...targetTimes[0]};
+//     dateAdjustment = 1;
+// }
 
 // 设置目标日期
 const targetDate = new Date(now);
@@ -111,18 +111,24 @@ const xtllUrl = "apigw.meituan.com/api/rights/activity/secKill/info";
 
 if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
+        let totalStock = 0;
         let obj2 = JSON.parse($response.body);
         obj2.data.currentTime=timestamp/1000;
         if (obj2.data && obj2.data["currentGrabCouponInfo"] && obj2.data["currentGrabCouponInfo"]["coupon"] && obj2.data["currentGrabCouponInfo"]["coupon"][0] && obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]){
             if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] === 8){
                 obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]=2;
                 $.msg($.name, `已抢过，强制点亮按钮`, ``);
+            }else if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] === 4){
+                obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]=2;
+                obj2.data["currentGrabCouponInfo"]["coupon"][0]["residueStock"]=obj2.data["currentGrabCouponInfo"]["coupon"][0]["totalStock"];
+                $.msg($.name, `已抢完，强制点亮按钮`, ``);
             }
             let m_arr = [];
             let m_wmk = 0;
             let m_cur = 0;
             for (let d in obj2.data["currentGrabCouponInfo"]["coupon"]){
                 if (obj2.data["currentGrabCouponInfo"]["coupon"][d]['couponAmountLimit'] === 0){
+                    totalStock = obj2.data["currentGrabCouponInfo"]["coupon"][d]['totalStock'];
                     m_wmk = m_cur;
                     m_arr.unshift(obj2.data["currentGrabCouponInfo"]["coupon"][d]);
                 }else{
@@ -135,11 +141,12 @@ if (url.indexOf(xtllUrl) != -1) {
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
         // 获取请求刷新
-        // mt_headers_sx = JSON.stringify($request.headers);
-        // if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
-        // $.setdata(url, "pkc_mt_url_sx");
-        // $.log(`[${$.name}] 获取美团Url✅: 成功,pkc_mt_url_sx: ${url}`);
-        // $.msg($.name, `获取美团Url: 成功✅`, `pkc_mt_url_sx`);
+        mt_headers_sx = JSON.stringify($request.headers);
+        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
+        $.setdata(url, "pkc_mt_url_sx");
+        $.log(`券总量：${totalStock}`);
+        $.log(`[${$.name}] 获取美团Url✅: 成功,pkc_mt_url_sx: ${url}`);
+        $.msg($.name, `获取美团Url: 成功✅`, `券总量：${totalStock}`);
         $done({body});
     }
 }
