@@ -11,58 +11,24 @@ promotion.waimai.meituan.com
 rights-apigw.meituan.com/api/rights/activity/secKill/info url script-response-body uptime-mt.js
 */
 const $ = Env("【美团抢券】时间修改");
-// 自动判断最近的抢券时间点
+// 这里修改来抢的时间，再开启本重写。
+const timeStr = '08:00:00';
+
 const now = new Date();
-const currentHour = now.getHours();
-const currentMinutes = now.getMinutes();
+const year = now.getFullYear();
+const month = (now.getMonth() + 1).toString().padStart(2, '0');
+const day = now.getDate().toString().padStart(2, '0');
 
-// 定义抢券时间点(小时,分钟)
-const targetTimes = [
-    {hour: 8, minute: 0},
-    {hour: 10, minute: 00},
-    {hour: 12, minute: 00},
-    {hour: 14, minute: 00},
-    {hour: 16, minute: 00},
-    {hour: 18, minute: 00},
-    {hour: 19, minute: 00},
-    {hour: 20, minute: 00},
-    {hour: 21, minute: 00},
-    {hour: 22, minute: 00},
-    {hour: 23, minute: 00},
-];
 
-// 默认设置为当天第一个时间点
-let targetTime = {...targetTimes[0]};
-let dateAdjustment = 0; // 0表示当天，1表示明天
+// 创建一个新的 Date 对象，设置日期为 now 的日期加一
+const nextDay = new Date(now);
+nextDay.setDate(now.getDate() + 1);
 
-// 找到下一个最近的抢券时间点
-for (let i = 0; i < targetTimes.length; i++) {
-    const time = targetTimes[i];
-    if (currentHour < time.hour ||
-        (currentHour === time.hour && currentMinutes < time.minute)) {
-        targetTime = time;
-        dateAdjustment = 0;
-        break;
-    }
-}
+// 获取新的日期的日期部分，并格式化为两位数的字符串
+const nextDayStr = nextDay.getDate().toString().padStart(2, '0');
 
-// 如果当前时间已超过所有时间点，则设置为第二天的第一个时间点
-// if (currentHour > 23 || (currentHour === 23 && currentMinutes >= 0)) {
-//     targetTime = {...targetTimes[0]};
-//     dateAdjustment = 1;
-// }
-
-// 设置目标日期
-const targetDate = new Date(now);
-targetDate.setDate(now.getDate() + dateAdjustment);
-
-const year = targetDate.getFullYear();
-const month = (targetDate.getMonth() + 1).toString().padStart(2, '0');
-const day = targetDate.getDate().toString().padStart(2, '0');
-const timeStr = `${targetTime.hour.toString().padStart(2, '0')}:${targetTime.minute.toString().padStart(2, '0')}:00`;
 
 const dateStr = `${year}-${month}-${day} ${timeStr}`;
-
 // 将时间字符串转换为本地时间对象
 const localTime = new Date(dateStr.replace(/-/g, '/'));
 
