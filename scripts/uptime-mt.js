@@ -113,20 +113,33 @@ if (url.indexOf(xtllUrl) != -1) {
     if(typeof $response !== "undefined"){
         let obj2 = JSON.parse($response.body);
         obj2.data.currentTime=timestamp/1000;
-        if (typeof obj2.data["currentGrabCouponInfo"] !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"]  !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"][0] !== "undefined" && typeof obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] !== "undefined"){
+        if (obj2.data && obj2.data["currentGrabCouponInfo"] && obj2.data["currentGrabCouponInfo"]["coupon"] && obj2.data["currentGrabCouponInfo"]["coupon"][0] && obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]){
             if (obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"] === 8){
                 obj2.data["currentGrabCouponInfo"]["coupon"][0]["status"]=2;
                 $.msg($.name, `已抢过，强制点亮按钮`, ``);
             }
+            let m_arr = [];
+            let m_wmk = 0;
+            let m_cur = 0;
+            for (let d in obj2.data["currentGrabCouponInfo"]["coupon"]){
+                if (obj2.data["currentGrabCouponInfo"]["coupon"][d]['couponAmountLimit'] === 0){
+                    m_wmk = m_cur;
+                    m_arr.unshift(obj2.data["currentGrabCouponInfo"]["coupon"][d]);
+                }else{
+                    m_arr.push(obj2.data["currentGrabCouponInfo"]["coupon"][d]);
+                }
+                m_cur++;
+            }
+            obj2.data["currentGrabCouponInfo"]["coupon"] = m_arr;
         }
         var body = JSON.stringify(obj2);
         console.log(`${JSON.stringify(obj2, null, '\t')}`);
         // 获取请求刷新
-        mt_headers_sx = JSON.stringify($request.headers);
-        if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
-        $.setdata(url, "pkc_mt_url_sx");
-        $.log(`[${$.name}] 获取美团Url✅: 成功,pkc_mt_url_sx: ${url}`);
-        $.msg($.name, `获取美团Url: 成功✅`, `pkc_mt_url_sx`);
+        // mt_headers_sx = JSON.stringify($request.headers);
+        // if (mt_headers_sx) $.setdata(mt_headers_sx, "mt_headers_sx");
+        // $.setdata(url, "pkc_mt_url_sx");
+        // $.log(`[${$.name}] 获取美团Url✅: 成功,pkc_mt_url_sx: ${url}`);
+        // $.msg($.name, `获取美团Url: 成功✅`, `pkc_mt_url_sx`);
         $done({body});
     }
 }
