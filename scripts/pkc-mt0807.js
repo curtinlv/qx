@@ -284,6 +284,7 @@ async function all() {
         let sNum = 100;
         for (let i = 0; i < pkc_qjnum; i++) {
             pkc_flag = false;
+            pkc_mtqj_rights_sx()
             await pkc_mtqj_xtll() //
             await pkcSleep(sNum);
             sNum = sNum+100;
